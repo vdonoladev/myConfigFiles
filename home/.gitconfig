@@ -1,0 +1,9 @@
+[user]
+	name = vdonoladev
+	email = victordonolaf@gmail.com
+[init]
+	default = branch
+[core]
+	editor = code
+[color]
+	ui = auto
