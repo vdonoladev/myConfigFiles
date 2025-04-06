@@ -66,6 +66,7 @@ cp .bashrc ~/.bashrc
 
 - Isso permite que você entenda exatamente onde cada arquivo deve ser colocado no seu sistema.
 
+```text
 myConfigFiles/
 └── home/
     ├── .bash_aliases
@@ -76,3 +77,4 @@ myConfigFiles/
     │           └── settings.json
     └── scripts/
         ├── afterInstall.sh
+```
