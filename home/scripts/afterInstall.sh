@@ -103,18 +103,17 @@ install_flatpaks() {
 	echo -e "${VERDE}[INFORMATION!] - Installing flatpak packages.${WITHOUT_COLOR}"
 
 	flatpak install flathub io.github.vikdevelop.SaveDesktop # SaveDesktop
-	flatpak install flathub com.github.tchx84.Flatseal # FlatSeal
-	flatpak install flathub com.bitwarden.desktop # BitWarden
-	flatpak install flathub org.telegram.desktop # Telegram
-	flatpak install flathub org.localsend.localsend_app # LocalSend
-	flatpak install flathub org.libreoffice.LibreOffice # LibreOffice
-	flatpak install flathub org.gnome.Boxes # Boxes
-	flatpak install flathub me.iepure.Ticketbooth # Ticket Booth
-	flatpak install flathub dev.bragefuglseth.Keypunch # KeyPunch
-	flatpak install flathub it.mijorus.gearlever # Gear Lever
-	flatpak install flathub org.upscayl.Upscayl # Upscayl
-	flatpak install flathub org.keepassxc.KeePassXC # KeePassXC
-	flatpak install flathub io.github.flattool.Warehouse # WareHouse
+	flatpak install flathub com.github.tchx84.Flatseal       # FlatSeal
+	flatpak install flathub com.bitwarden.desktop            # BitWarden
+	flatpak install flathub org.telegram.desktop             # Telegram
+	flatpak install flathub org.localsend.localsend_app      # LocalSend
+	flatpak install flathub org.libreoffice.LibreOffice      # LibreOffice
+	flatpak install flathub org.gnome.Boxes                  # Boxes
+	flatpak install flathub me.iepure.Ticketbooth            # Ticket Booth
+	flatpak install flathub dev.bragefuglseth.Keypunch       # KeyPunch
+	flatpak install flathub it.mijorus.gearlever             # Gear Lever
+	flatpak install flathub org.upscayl.Upscayl              # Upscayl
+	flatpak install flathub io.github.flattool.Warehouse     # WareHouse
 }
 
 # --- POST INSTALLATION --- #
