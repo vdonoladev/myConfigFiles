@@ -4,7 +4,8 @@
   <a href="#tech">Tecnologias</a> • 
   <a href="#about">Sobre</a> •
   <a href="#started">Começando</a> • 
-  <a href="#structure">Estrutura</a>
+  <a href="#structure">Estrutura</a> • 
+  <a href="#description">Descrição</a>
 </p>
 
 <p align="center">
@@ -78,3 +79,21 @@ myConfigFiles/
     └── scripts/
         ├── afterInstall.sh
 ```
+
+<h2 id="description">Descrição</h2>
+
+<h3>.bash_aliases</h3>
+
+- Arquivo responsável por <b>armazenar atalhos de comandos</b> usados no terminal, facilitando e agilizando tarefas do dia a dia.
+
+<h3>afterInstall.sh</h3>
+
+- Um script automatizado de <b>pós-instalação</b> para sistemas baseados em Debian/Ubuntu, como o <b>Pop!\_OS</b>. Ele realiza uma série de tarefas para configurar o sistema rapidamente após uma instalação limpa.
+
+<h3>settings.json</h3>
+
+- Este arquivo define uma configuração enxuta, rápida e sem distrações para o Visual Studio Code.
+
+<h3>.gitconfig</h3>
+
+- Arquivo de configuração global do Git para identidade, editor padrão e comportamento visual.
