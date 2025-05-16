@@ -30,6 +30,38 @@
 
 <p>O foco principal está na <b>linha de comando</b>, com ajustes voltados para desenvolvedores e usuários mais avançados de Linux.</p>
 
+<h3>Apps instalados</h3>
+
+<h4>.deb</h4>
+
+- Google Chrome
+- Ente Auth
+- Free Download Manager
+
+<h4>apt</h4>
+
+- wget
+- flatpak
+- curl
+- ubuntu-restricted-extras
+- neofetch
+- code
+
+<h4>flatpak</h4>
+
+- SaveDesktop
+- FlatSeal
+- BitWarden
+- Telegram
+- LocalSend
+- LibreOffice
+- Boxes
+- Ticket Booth
+- KeyPunch
+- Gear Lever
+- Upscayl
+- WareHouse
+
 <h2 id="started">Começando</h2>
 
 1. **Clone este repositório:**

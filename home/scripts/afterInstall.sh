@@ -15,6 +15,7 @@ set -e
 
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.3.2/ente-auth-v4.3.2-x86_64.deb"
+URL_FDM="https://files2.freedownloadmanager.org/6/latest/freedownloadmanager.deb"
 
 # --- DIRECTORIES AND FILES --- #
 
@@ -80,6 +81,7 @@ install_debs() {
 	mkdir -p "$DIRECTORY_DOWNLOADS"
 	wget -c "$URL_GOOGLE_CHROME" -P "$DIRECTORY_DOWNLOADS"
 	wget -c "$URL_ENTE_AUTH" -P "$DIRECTORY_DOWNLOADS"
+	wget -c "$URL_FDM" -P "$DIRECTORY_DOWNLOADS"
 
 	# Installing .deb packages downloaded in the previous session
 	echo -e "${VERDE}[INFORMATION!] - Installing downloaded .deb packages.${WITHOUT_COLOR}"
