@@ -61,6 +61,20 @@
 - Gear Lever
 - Upscayl
 - WareHouse
+- Discord
+
+<h4>Extensões do navegador</h4>
+
+- [Documentos Google off-line](https://chromewebstore.google.com/detail/documentos-google-off-lin/ghbmnnjooekpmoecnnnilnnbdlolhkhi)
+- [Free Download Manager](https://chromewebstore.google.com/detail/free-download-manager/ahmpjcflkgiildlgicmcieglgoilbfdp)
+- [Gerenciador de senhas Bitwarden](https://chromewebstore.google.com/detail/gerenciador-de-senhas-bit/nngceckbapebfimnlniiiahkandclblb)
+- [Google Tradutor](https://chromewebstore.google.com/detail/google-tradutor/aapbdbdomjkkjkaonfhkkikfgjllcleb)
+- [Smart Emoji Keyboard](https://chromewebstore.google.com/detail/smart-emoji-keyboard/nekacekgelnakbmhepjioandkacfablo)
+- [Unhook (remover recomendações do YouTube)](https://chromewebstore.google.com/detail/unhook-remove-youtube-rec/khncfooichmfjbepaaaebmommgaepoid)
+- [Corretor gramatical e ortográfico - LanguageTool](https://chromewebstore.google.com/detail/corretor-gramatical-e-ort/oldceeleldhonbafppcapldpdifcinji)
+- [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk)
+- [Quick Pocket](https://chromewebstore.google.com/detail/quick-pocket/gccdebcpenpmmnaedfmkdhpbnihcdedh)
+- [UnDistracted (esconder feed de redes sociais)](https://chromewebstore.google.com/detail/undistracted-hide-faceboo/pjjgklgkfeoeiebjogplpnibpfnffkng)
 
 <h2 id="started">Começando</h2>
 
