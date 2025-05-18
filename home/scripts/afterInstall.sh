@@ -116,6 +116,7 @@ install_flatpaks() {
 	flatpak install flathub it.mijorus.gearlever             # Gear Lever
 	flatpak install flathub org.upscayl.Upscayl              # Upscayl
 	flatpak install flathub io.github.flattool.Warehouse     # WareHouse
+	flatpak install flathub com.discordapp.Discord           # Discord
 }
 
 # --- POST INSTALLATION --- #
