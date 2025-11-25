@@ -1,151 +1,150 @@
-<h1 align="center" style="font-weight: bold;">myConfigFiles</h1>
+## 🚀 myConfigFiles
 
 <p align="center">
-  <a href="#tech">Tecnologias</a> • 
-  <a href="#about">Sobre</a> •
-  <a href="#started">Começando</a> • 
-  <a href="#structure">Estrutura</a> • 
-  <a href="#description">Descrição</a>
+<a href="#about">Sobre</a> •
+<a href="#tech">Tecnologias</a> •
+<a href="#started">Começando</a> •
+<a href="#structure">Estrutura de Arquivos</a> •
+<a href="#config-details">Detalhes das Configurações</a> •
+<a href="#apps-installed">Aplicações Instaladas</a>
 </p>
 
 <p align="center">
-    <b>Repositório pessoal com meus arquivos de configuração no Linux (Pop!_OS)</b>
+<b>Repositório pessoal com meus arquivos de configuração do ambiente Linux (Pop!_OS)</b>
 </p>
 
-<h2 id="tech">Tecnologias</h2>
+---
 
-- [Bash Script](https://devdocs.io/bash)
-  - Todos os arquivos são escritos em **Shell Script (bash)**, seguindo o padrão dos arquivos de configuração que o próprio sistema usa. A ideia é manter tudo simples, leve e fácil de replicar.
+## 🎯 Sobre
 
-<h2 id="about">Sobre</h2>
+Este repositório contém meus arquivos de **configuração** (`dotfiles`) utilizados no **Pop\!\_OS**, a distribuição Linux baseada em Ubuntu desenvolvida pela System76.
 
-<p>Este repositório contém meus arquivos de configuração utilizados no <b>Pop!_OS</b>, a distribuição Linux baseada em Ubuntu desenvolvida pela <b>System76</b>. Ele serve tanto como backup quanto como referência para quem estiver interessado em personalizar seu ambiente Linux.</p>
+Ele serve como um **backup** pessoal e como **referência** para quem estiver interessado em personalizar seu ambiente Linux. O foco principal está na **linha de comando**, com ajustes voltados para **desenvolvedores** e usuários mais avançados.
 
-<p>Ao longo do tempo, fui ajustando meu sistema para deixá-lo do meu jeito -- mais produtivo, limpo e funcional. Neste repositório, você encontrará:</p>
+Ao longo do tempo, ajustei meu sistema para torná-lo mais **produtivo, limpo e funcional**. Aqui você encontrará:
 
-- Arquivos de configuração de terminal (como `.bashrc`, `.profile`, etc)
-- Alias personalizados e funções para o shell
-- Configurações do ambiente gráfico
-- Outros scripts úteis que uso no dia a dia
+- Arquivos de configuração de **terminal** (como `.bashrc`, `.profile`, etc.)
+- **Alias** personalizados e **funções** para o shell.
+- Outros **scripts** úteis que uso no dia a dia.
+- Configurações específicas para alguns editores de código e ferramentas.
 
-<p>O foco principal está na <b>linha de comando</b>, com ajustes voltados para desenvolvedores e usuários mais avançados de Linux.</p>
+---
 
-<h3>Apps instalados</h3>
+## 💻 Tecnologias
 
-<h4>.deb</h4>
+- **Bash Script**
+  - Todos os arquivos principais são escritos em **Shell Script (Bash)**, seguindo o padrão de arquivos de configuração que o próprio sistema usa. A ideia é manter tudo **simples, leve e fácil de replicar**.
 
-- Google Chrome
-- Ente Auth
+---
 
-<h4>apt</h4>
+## ⚙️ Começando
 
-- wget
-- flatpak
-- curl
-- ubuntu-restricted-extras
-- neofetch
-- code
+Siga os passos abaixo para começar a usar (ou referenciar) estas configurações em seu sistema.
 
-<h4>flatpak</h4>
+1.  **Clone este repositório:**
 
-- BitWarden
-- Telegram
-- LocalSend
-- WareHouse
-- Discord
-- VLC
-- Spotify
+    ```bash
+    git clone https://github.com/vdonoladev/myConfigFiles.git
+    ```
 
-<h4>snap</h4>
+2.  **Navegue até o diretório do projeto:**
 
-- Jetbrains Rider
-- Jetbrains PHPStorm
+    ```bash
+    cd myConfigFiles
+    ```
 
-<h4>Extensões do navegador</h4>
+3.  **Copie os arquivos desejados para o seu diretório _home_ (`~`):**
 
-- [Documentos Google off-line](https://chromewebstore.google.com/detail/documentos-google-off-lin/ghbmnnjooekpmoecnnnilnnbdlolhkhi)
-- [Free Download Manager](https://chromewebstore.google.com/detail/free-download-manager/ahmpjcflkgiildlgicmcieglgoilbfdp)
-- [Gerenciador de senhas Bitwarden](https://chromewebstore.google.com/detail/gerenciador-de-senhas-bit/nngceckbapebfimnlniiiahkandclblb)
-- [Google Tradutor](https://chromewebstore.google.com/detail/google-tradutor/aapbdbdomjkkjkaonfhkkikfgjllcleb)
-- [Smart Emoji Keyboard](https://chromewebstore.google.com/detail/smart-emoji-keyboard/nekacekgelnakbmhepjioandkacfablo)
-- [Unhook (remover recomendações do YouTube)](https://chromewebstore.google.com/detail/unhook-remove-youtube-rec/khncfooichmfjbepaaaebmommgaepoid)
-- [Corretor gramatical e ortográfico - LanguageTool](https://chromewebstore.google.com/detail/corretor-gramatical-e-ort/oldceeleldhonbafppcapldpdifcinji)
-- [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk)
-- [Quick Pocket](https://chromewebstore.google.com/detail/quick-pocket/gccdebcpenpmmnaedfmkdhpbnihcdedh)
-- [UnDistracted (esconder feed de redes sociais)](https://chromewebstore.google.com/detail/undistracted-hide-faceboo/pjjgklgkfeoeiebjogplpnibpfnffkng)
+    ```bash
+    # Exemplo: Copiando o .bashrc da pasta 'home' para a sua pasta pessoal
+    cp home/.bashrc ~/.bashrc
+    ```
 
-<h2 id="started">Começando</h2>
+    ⚠️ **Importante:** Sempre faça **backup** dos seus arquivos de configuração originais antes de sobrescrevê-los\!
 
-1. **Clone este repositório:**
+---
 
-```bash
-git clone https://github.com/vdonoladev/myConfigFiles.git
-```
+## 📂 Estrutura de Arquivos
 
-2. **Navegue até o diretório do projeto:**
+A estrutura do repositório foi pensada para ser o mais próxima possível da organização real do sistema, com a pasta `home` representando o diretório pessoal do usuário (`~`).
 
-```bash
-cd myConfigFiles
-```
-
-3. **Copie os arquivos desejados para o seu diretório home:**
-
-```bash
-cp .bashrc ~/.bashrc
-```
-
-- ou edite manualmente conforme necessário
-
-⚠️ **Importante:** sempre faça backup dos seus arquivos antes de sobrescrevê-los!
-
-<h2 id="structure">Estrutura</h2>
-
-<p>A estrutura do repositório foi pensada para ser o mais próxima possível da organização real do sistema. Os aquivos estão organizados a partir da pasta `Home`, representando o diretório pessoal do usuário (`~`). Ou seja:</p>
-
-- Todos os arquivos de configuração localizados diretamente na `Home` estarão dentro da pasta `home`.
-- Caso algum arquivo pertença a uma subpasta específica (como `.config`, `.local`, etc.), ele será mantido dentro da mesma hierarquia. <b>Exemplo:</b>
-  - `home/.bashrc`
-  - `home/.profile`
-  - `home/.config/Code/User/settings.json`
-
-- Isso permite que você entenda exatamente onde cada arquivo deve ser colocado no seu sistema.
+Isso permite que você entenda exatamente onde cada arquivo deve ser colocado.
 
 ```text
 myConfigFiles/
 └── home/
-    ├── .bash_aliases
-    ├── .bashrc
-    ├── .gitconfig
+    ├── .bash_aliases      # Configurações de atalhos do terminal
+    ├── .bashrc            # Configurações do shell bash
+    ├── .gitconfig         # Configurações globais do Git
     ├── .config/
     │   └── Code/
     │       └── User/
-    │           └── settings.json
+    │           └── settings.json  # Configurações do VS Code
     └── scripts/
-        ├── afterInstall.sh
+        └── afterInstall.sh        # Script de pós-instalação
 ```
 
-<h2 id="description">Descrição</h2>
+---
 
-<h3>.bash_aliases</h3>
+## 📝 Detalhes das Configurações
 
-- Arquivo responsável por <b>armazenar atalhos de comandos</b> usados no terminal, facilitando e agilizando tarefas do dia a dia.
+### Arquivos Principais
 
-<h3>afterInstall.sh</h3>
+- **`.bash_aliases`**
+  - Arquivo responsável por armazenar **atalhos de comandos** (_aliases_) usados no terminal, facilitando e agilizando tarefas do dia a dia.
+- **`.bashrc`**
+  - Arquivo de configuração principal do shell Bash. Ele carrega o `.bash_aliases` e define o comportamento do terminal, como o _prompt_ e as **funções personalizadas**.
+- **`.gitconfig`**
+  - Arquivo de configuração global do **Git** para identidade, editor padrão e comportamento visual.
+- **`settings.json`**
+  - Configurações do **Visual Studio Code** para um ambiente enxuto, rápido e sem distrações.
 
-- Um script automatizado de <b>pós-instalação</b> para sistemas baseados em Debian/Ubuntu, como o <b>Pop!\_OS</b>. Ele realiza uma série de tarefas para configurar o sistema rapidamente após uma instalação limpa.
+### Scripts Úteis
 
-<h3>settings.json</h3>
+- **`afterInstall.sh`**
+  - Um script automatizado de **pós-instalação** para sistemas baseados em Debian/Ubuntu, como o **Pop\!\_OS**. Ele realiza uma série de tarefas para configurar o sistema rapidamente após uma instalação limpa.
 
-- Este arquivo define uma configuração enxuta, rápida e sem distrações para o Visual Studio Code.
+### 🌟 Funções Personalizadas no `.bashrc`
 
-<h3>.gitconfig</h3>
+As seguintes funções foram adicionadas ao `.bashrc` para maior produtividade:
 
-- Arquivo de configuração global do Git para identidade, editor padrão e comportamento visual.
+| Comando               | Descrição                                                         |
+| :-------------------- | :---------------------------------------------------------------- |
+| `mkcd nome_pasta`     | Cria uma pasta e entra nela.                                      |
+| `extract arquivo.zip` | Extrai **qualquer** arquivo compactado (suporta vários formatos). |
+| `search "texto"`      | Busca texto em arquivos dentro do diretório atual.                |
+| `topcommands`         | Mostra seus 10 comandos mais usados.                              |
+| `backup arquivo.txt`  | Cria backup de um arquivo com _timestamp_.                        |
+| `dirsize`             | Mostra o tamanho das pastas no diretório atual.                   |
+| `serve`               | Inicia um servidor HTTP local simples.                            |
+| `memtop`              | Mostra os Top 10 processos por consumo de memória.                |
+| `cputop`              | Mostra os Top 10 processos por consumo de CPU.                    |
+| `sysinfo`             | Exibe um resumo das informações do sistema.                       |
 
-<h3>.bash_aliases</h3>
+---
 
--
+## 📦 Aplicações Instaladas
 
-<h3>.bashrc</h3>
+Uma lista das principais aplicações e extensões que eu utilizo:
 
--
+### 🖥️ Aplicações
+
+| Tipo de Instalação | Pacotes                                                          |
+| :----------------- | :--------------------------------------------------------------- |
+| **.deb**           | Google Chrome, Ente Auth                                         |
+| **apt**            | wget, flatpak, curl, ubuntu-restricted-extras, neofetch, code    |
+| **flatpak**        | BitWarden, Telegram, LocalSend, WareHouse, Discord, VLC, Spotify |
+| **snap**           | Jetbrains Rider, Jetbrains PHPStorm                              |
+
+### 🌐 Extensões de Navegador (Google Chrome)
+
+- [Gerenciador de senhas Bitwarden](https://chromewebstore.google.com/detail/gerenciador-de-senhas-bit/nngceckbapebfimnlniiiahkandclblb)
+- [Corretor gramatical e ortográfico - LanguageTool](https://chromewebstore.google.com/detail/corretor-gramatical-e-ort/oldceeleldhonbafppcapldpdifcinji)
+- [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk)
+- [UnDistracted (esconder feed de redes sociais)](https://chromewebstore.google.com/detail/undistracted-hide-faceboo/pjjgklgkfeoeiebjogplpnibpfnffkng)
+- [Unhook (remover recomendações do YouTube)](https://chromewebstore.google.com/detail/unhook-remove-youtube-rec/khncfooichmfjbepaaaebmommgaepoid)
+- [Google Tradutor](https://chromewebstore.google.com/detail/google-tradutor/aapbdbdomjkkjkaonfhkkikfgjllcleb)
+- [Documentos Google off-line](https://chromewebstore.google.com/detail/documentos-google-off-lin/ghbmnnjooekpmoecnnnilnnbdlolhkhi)
+- [Free Download Manager](https://chromewebstore.google.com/detail/free-download-manager/ahmpjcflkgiildlgicmcieglgoilbfdp)
+- [Smart Emoji Keyboard](https://chromewebstore.google.com/detail/smart-emoji-keyboard/nekacekgelnakbmhepjioandkacfablo)
+- [Quick Pocket](https://chromewebstore.google.com/detail/quick-pocket/gccdebcpenpmmnaedfmkdhpbnihcdedh)
