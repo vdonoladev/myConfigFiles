@@ -114,6 +114,7 @@ cp .bashrc ~/.bashrc
 myConfigFiles/
 └── home/
     ├── .bash_aliases
+    ├── .bashrc
     ├── .gitconfig
     ├── .config/
     │   └── Code/
@@ -140,3 +141,11 @@ myConfigFiles/
 <h3>.gitconfig</h3>
 
 - Arquivo de configuração global do Git para identidade, editor padrão e comportamento visual.
+
+<h3>.bash_aliases</h3>
+
+-
+
+<h3>.bashrc</h3>
+
+-
