@@ -36,7 +36,6 @@
 
 - Google Chrome
 - Ente Auth
-- Free Download Manager
 
 <h4>apt</h4>
 
@@ -49,19 +48,18 @@
 
 <h4>flatpak</h4>
 
-- SaveDesktop
-- FlatSeal
 - BitWarden
 - Telegram
 - LocalSend
-- LibreOffice
-- Boxes
-- Ticket Booth
-- KeyPunch
-- Gear Lever
-- Upscayl
 - WareHouse
 - Discord
+- VLC
+- Spotify
+
+<h4>snap</h4>
+
+- Jetbrains Rider
+- Jetbrains PHPStorm
 
 <h4>Extensões do navegador</h4>
 
@@ -106,7 +104,6 @@ cp .bashrc ~/.bashrc
 
 - Todos os arquivos de configuração localizados diretamente na `Home` estarão dentro da pasta `home`.
 - Caso algum arquivo pertença a uma subpasta específica (como `.config`, `.local`, etc.), ele será mantido dentro da mesma hierarquia. <b>Exemplo:</b>
-
   - `home/.bashrc`
   - `home/.profile`
   - `home/.config/Code/User/settings.json`
