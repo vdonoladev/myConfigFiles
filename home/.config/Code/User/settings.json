@@ -1,102 +1,110 @@
 {
   // GIT E GIT LENS
-  "git.confirmSync": false, // Não exibe uma confirmação antes de sincronizar mudanças com o repositório remoto.
-  "git.enableSmartCommit": true, // Permite que você comite direto (sem prompt) ao usar `Ctrl + Enter`, mesmo se o staging não estiver feito manualmente.
-  "git.openRepositoryInParentFolders": "always", // Faz com que o VSCode procure automaticamente o repositório Git mais próximo na árvore de diretórios, mesmo que você abra uma subpasta.
-  "git.autofetch": true, // Atualiza automaticamente o repositório (fetch) em segundo plano, sem precisar clicar manualmente.
-  "gitlens.codeLens.recentChange.enabled": false, // Desativa o recurso do GitLens que mostra acima de cada função a última mudança feita nela.
-  "gitlens.codeLens.authors.enabled": false, // Também desativa a exibição de autores das linhas diretamente no código.
-
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.openRepositoryInParentFolders": "always",
+  "gitlens.codeLens.recentChange.enabled": false,
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   // APARÊNCIA - UI - TEMAS - LAYOUT
-  "workbench.colorTheme": "Min Dark", // Define o tema de cores do VSCode.
-  "workbench.iconTheme": "symbols", // Define o tema de ícones do VSCode. 
-  "symbols.hidesExplorerArrows": false, // Mantém visíveis as setinhas de expandir/pastar no Explorer
+  "workbench.colorTheme": "Hack The Box",
+  "workbench.iconTheme": "symbols",
+  "symbols.hidesExplorerArrows": false,
+  "breadcrumbs.enabled": false,
+  "workbench.statusBar.visible": false,
+  "workbench.layoutControl.enabled": false,
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.editor.labelFormat": "short",
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.activityBar.location": "default",
+  "window.commandCenter": false,
+  "window.titleBarStyle": "native",
+  "window.menuBarVisibility": "toggle",
+  // EDITOR: FONTE - MINIMAP - SCROLLBAR - DICAS - SUGESTÕES
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 13,
+  "editor.lineHeight": 1.4,
+  "editor.tabSize": 2,
   "editor.rulers": [
     80,
     120
-  ], // Adiciona linhas verticais no editor nas colunas 80 e 120. Ajuda a manter o código dentro dos limites legíveis.
-  "explorer.compactFolders": false, // Mostra cada pasta em uma linha separada (sem colapsar em uma única linha, tipo `src/components/Header`).
-  "breadcrumbs.enabled": false, // Desativa a navegação por breadcrumbs (barra de navegação de arquivos e símbolos no topo do editor).
-  "workbench.statusBar.visible": false, // Oculta a barra de status inferior (aquele rodapé com branch, linguagem, erros, etc).
-  "window.commandCenter": false, // Remove o botão do Command Center da barra de título (novo recurso que deixa a barra com uma busca global).
-  "workbench.layoutControl.enabled": false, // Remove o botão de controle de layout no canto superior direito do VSCode.
-  "workbench.startupEditor": "newUntitledFile", // Abre um novo arquivo em branco ao iniciar o VSCode (ao invés da tela de boas-vindas).
-  "workbench.editor.labelFormat": "short", // Mostra o nome dos arquivos abertos de forma mais curta (sem caminhos longos).
-  "workbench.editor.empty.hint": "hidden", // Esconde as dicas que aparecem quando não há arquivos abertos.
-  "window.titleBarStyle": "native", // Usa a barra de título nativa do sistema (em vez da customizada do VSCode).
-  "workbench.activityBar.location": "default", // Mantém a barra lateral com ícones (Explorer, Source Control, etc) na lateral esquerda.
-  "window.menuBarVisibility": "toggle", // A barra de menus (Arquivo, Editar, etc) aparece apenas quando você pressiona `Alt`.
-
-  // EDITOR: FONTE - MINIMAP - SCROLLBAR - DICAS - SUGESTÕES
-  "editor.fontFamily": "JetBrains Mono", // Define a fonte do código.
-  "editor.fontLigatures": true, // Ativa ligaduras de fonte (ex: `!=` se torna um único caractere).
-  "editor.fontSize": 13, // Define o tamanho da fonte do código.
-  "editor.lineHeight": 1.4, // Define a altura da linha do código.
-  "editor.minimap.enabled": false, // Desativa o minimap (a barra lateral que mostra uma visão geral do código).
-  "editor.scrollbar.vertical": "hidden", // Desativa a barra de rolagem vertical.
-  "editor.scrollbar.horizontal": "hidden", // Desativa a barra de rolagem horizontal.
-  "editor.hideCursorInOverviewRuler": true, // Oculta o cursos naquela barra lateral de overview (quando o minimapa está ativado).
-  "editor.semanticHighlighting.enabled": false, // Desativa o destaque semântico (cores diferentes para variáveis, funções, etc).
-  "editor.stickyScroll.enabled": false, // Desativa o cabeçalho "grudado" com o nome da função/classe ao rolar.
-  "editor.snippetSuggestions": "top", // Faz os snippets aparecerem no topo da lista de sugestões.
-  "editor.parameterHints.enabled": false, // Desativa as dicas de parâmetros que aparecem quando você está digitando uma função.
-  "editor.renderLineHighlight": "gutter", // Destaca a linha atual apenas na barra lateral (não no fundo do editor).
-  "editor.suggestSelection": "first", // Faz com que a primeira sugestão apareça selecionada por padrão.
-  "editor.formatOnSave": true, // Formata o código automaticamente ao salvar.
-  "editor.acceptSuggestionOnCommitCharacter": false, // Desativa a aceitação automática de sugestões ao digitar caracteres de commit (como `.` ou `,`).
-  "editor.accessibilitySupport": "off", // Desliga suporte de acessibilidade, deixando o editor mais leve.
-  "editor.tabSize": 2, // Define o tamanho da tabulação (2 espaços).
+  ],
+  "editor.minimap.enabled": false,
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.semanticHighlighting.enabled": false,
+  "editor.stickyScroll.enabled": false,
+  "editor.snippetSuggestions": "top",
+  "editor.parameterHints.enabled": false,
+  "editor.renderLineHighlight": "gutter",
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.accessibilitySupport": "off",
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.largeFileOptimizations": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }, // Aplica correções automáticas do ESLint ao salvar o arquivo.
-
+  },
+  // FORMATADORES POR LINGUAGEM
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   // JAVASCRIPT - TYPESCRIPT - ESLINT - EMMET
-  "javascript.suggest.autoImports": true, // Ativa sugestões automáticas de importação para JavaScript.
-  "typescript.suggest.autoImports": true, // Ativa sugestões automáticas de importação para TypeScript.
-  "typescript.updateImportsOnFileMove.enabled": "always", // Atualiza automaticamente as importações quando você move arquivos.
-  "javascript.updateImportsOnFileMove.enabled": "always", // Atualiza automaticamente as importações quando você move arquivos.
-  "typescript.preferences.preferTypeOnlyAutoImports": true, // Prefere auto-importações de tipos apenas para TypeScript.
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "graphql"
-  ], // Valida arquivos JavaScript, React e GraphQL com ESLint.
-  "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  }, // Define o formatador padrão para arquivos JavaScript.
-  "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
-  }, // Define o formatador padrão para arquivos TypeScript.
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }, // Define o formatador padrão para arquivos HTML.
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }, // Define o formatador padrão para arquivos CSS.
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  }, // Define o formatador padrão para arquivos JSON.
-  "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  }, // Define o formatador padrão para arquivos JSONC.
+  ],
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
-  }, // Permite o uso de Emmet (atalhos de expansão de código) em arquivos JavaScript.
+  },
   "emmet.syntaxProfiles": {
     "javascript": "jsx"
-  }, // Define o perfil de sintaxe do Emmet para JavaScript como JSX.
-
+  },
   // EXPLORER - FILE NESTING - ORGANIZAÇÃO DE ARQUIVOS
-  "explorer.confirmDelete": false, // Desativa a confirmação ao excluir arquivos.
-  "explorer.confirmDragAndDrop": false, // Desativa a confirmação ao arrastar e soltar arquivos.
-  "explorer.sortOrder": "foldersNestsFiles", // Define a ordem de exibição no Explorer para pastas primeiro, depois arquivos.
-  "explorer.fileNesting.enabled": true, // Ativa o recurso de agrupamento de arquivos no Explorer.
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "foldersNestsFiles",
+  "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "package.json": ".eslint*, prettier*, tsconfig*, vite*, pnpm-*, bun.lockb, nest*, package-lock*",
     "tailwind.config.*": "tailwind.config*, postcss.config*",
     ".env.local": ".env*",
     ".env": ".env*"
-  }, // Define os padrões de agrupamento de arquivos no Explorer.
+  },
   "files.exclude": {
     "**/CVS": true,
     "**/.DS_Store": true,
@@ -104,14 +112,31 @@
     "**/.svn": true,
     "**/.git": true,
     ".vscode": true
-  }, // Esconde arquivos e pastas específicas no Explorer.
-
+  },
   // TERMINAL
-  "terminal.integrated.showExitAlert": false, // Desativa o alerta ao fechar o terminal.
-  "terminal.integrated.fontSize": 13, // Define o tamanho da fonte do terminal.
-  "terminal.integrated.env.linux": {}, // Define variáveis de ambiente específicas para o terminal no Linux.
-  "terminal.integrated.gpuAcceleration": "on", // Ativa aceleração de GPU para o terminal.
-  
+  "terminal.integrated.showExitAlert": false,
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.env.linux": {},
+  "terminal.integrated.gpuAcceleration": "on",
   // EXTENSÕES E RECOMENDAÇÕES
-  "extensions.ignoreRecommendations": true // Ignora recomendações de extensões do VSCode.
+  "extensions.ignoreRecommendations": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "amazonQ.suppressPrompts": {
+    "amazonQChatPairProgramming": true,
+    "amazonQChatDisclaimer": true
+  },
+  "chat.mcp.gallery.enabled": true,
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.formatOnSave": true,
+  },
+  "laravel-pint.enable": true,
+  "php.suggest.basic": false,
+  "prettier.tabWidth": 2,
+  "editor.formatOnPaste": true,
+  "php.validate.run": "onType",
+  "phpcs.standard": "PSR2",
+  "phpcs.executablePath": "/home/vdonoladev/.config/composer/vendor/bin/phpcs",
 }
