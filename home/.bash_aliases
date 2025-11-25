@@ -8,6 +8,9 @@ alias ips='ip -c -br a' # Mostra os endereços IP de todas as interfaces de rede
 alias ls='exa' # Substitui o comando ls pelo exa, que lista arquivos com cores e ícones
 alias gh='history|grep' # Busca um comando específico no histórico do terminal
 alias lt='tree -L 2' # Mostra a estrutura de diretórios em árvore com até 2 níveis de profundidade
+alias ll='ls -lah' # Lista detalhada com arquivos ocultos
+alias ..='cd ..' # Volta um diretório
+alias ...='cd ../..' # Volta dois diretórios
 
 # Git
 alias gadd='git add' # Atalho para adicionar arquivos ao staging do Git
