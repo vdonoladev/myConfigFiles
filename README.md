@@ -138,13 +138,9 @@ Uma lista das principais aplicações e extensões que eu utilizo:
 
 ### 🌐 Extensões de Navegador (Google Chrome)
 
-- [Gerenciador de senhas Bitwarden](https://chromewebstore.google.com/detail/gerenciador-de-senhas-bit/nngceckbapebfimnlniiiahkandclblb)
-- [Corretor gramatical e ortográfico - LanguageTool](https://chromewebstore.google.com/detail/corretor-gramatical-e-ort/oldceeleldhonbafppcapldpdifcinji)
-- [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk)
-- [UnDistracted (esconder feed de redes sociais)](https://chromewebstore.google.com/detail/undistracted-hide-faceboo/pjjgklgkfeoeiebjogplpnibpfnffkng)
-- [Unhook (remover recomendações do YouTube)](https://chromewebstore.google.com/detail/unhook-remove-youtube-rec/khncfooichmfjbepaaaebmommgaepoid)
-- [Google Tradutor](https://chromewebstore.google.com/detail/google-tradutor/aapbdbdomjkkjkaonfhkkikfgjllcleb)
+- [1Password – Password Manager](https://chromewebstore.google.com/detail/1password-%E2%80%93-password-mana/aeblfdkhhhdcdjpifhhbdiojplfjncoa)
+- [Chrome Remote Desktop](https://chromewebstore.google.com/detail/chrome-remote-desktop/inomeogfingihgjfjlpeplalcfajhgai)
+- [Integração com GNOME Shell](https://chromewebstore.google.com/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep)
 - [Documentos Google off-line](https://chromewebstore.google.com/detail/documentos-google-off-lin/ghbmnnjooekpmoecnnnilnnbdlolhkhi)
-- [Free Download Manager](https://chromewebstore.google.com/detail/free-download-manager/ahmpjcflkgiildlgicmcieglgoilbfdp)
-- [Smart Emoji Keyboard](https://chromewebstore.google.com/detail/smart-emoji-keyboard/nekacekgelnakbmhepjioandkacfablo)
-- [Quick Pocket](https://chromewebstore.google.com/detail/quick-pocket/gccdebcpenpmmnaedfmkdhpbnihcdedh)
+- [Inoreader: Read-later and RSS extension](https://chromewebstore.google.com/detail/inoreader-read-later-and/kfimphpokifbjgmjflanmfeppcjimgah)
+- [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk)
