@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# ============================================
+# .bashrc - Configuração do Bash
+# ============================================
+# Autor: vdonoladev
+# ~/.bashrc: executado pelo bash(1) para shells não-login
+# ============================================
+
 # Se não estiver rodando interativamente, não fazer nada
 case $- in
     *i*) ;;
@@ -38,23 +45,35 @@ shopt -s cmdhist
 # COMPORTAMENTO DO SHELL
 # ============================================
 
-# Corrige erros menores de digitação em nomes de diretórios ao usar cd
-shopt -s cdspell
-
-# Corrige erros menores em nomes de diretórios durante a conclusão
-shopt -s dirspell
-
 # Atualiza LINES e COLUMNS após cada comando (útil para redimensionamento de janela)
 shopt -s checkwinsize
 
 # Permite usar ** para busca recursiva de arquivos (ex: ls **/*.txt)
 shopt -s globstar
 
+# Corrige erros menores de digitação em nomes de diretórios ao usar cd
+shopt -s cdspell
+
+# Corrige erros menores em nomes de diretórios durante a conclusão
+shopt -s dirspell
+
 # Expande aliases em comandos não-interativos
 shopt -s expand_aliases
 
 # ============================================
-# CORES E VISUAL
+# LESSPIPE (Torna o less mais amigável)
+# ============================================
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# ============================================
+# CHROOT (para ambientes enjaulados)
+# ============================================
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# ============================================
+# CORES PARA PROMPT E SCRIPTS
 # ============================================
 
 # Habilita suporte a cores no terminal
@@ -62,24 +81,35 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
-# Cores para uso em scripts e prompts
-export RED='\[\033[0;31m\]'
-export GREEN='\[\033[0;32m\]'
-export YELLOW='\[\033[0;33m\]'
-export BLUE='\[\033[0;34m\]'
-export PURPLE='\[\033[0;35m\]'
-export CYAN='\[\033[0;36m\]'
-export WHITE='\[\033[0;37m\]'
-export BOLD='\[\033[1m\]'
-export RESET='\[\033[0m\]'
+# Cores para uso no PROMPT (com escape)
+export PROMPT_RED='\[\033[0;31m\]'
+export PROMPT_GREEN='\[\033[0;32m\]'
+export PROMPT_YELLOW='\[\033[0;33m\]'
+export PROMPT_BLUE='\[\033[0;34m\]'
+export PROMPT_PURPLE='\[\033[0;35m\]'
+export PROMPT_CYAN='\[\033[0;36m\]'
+export PROMPT_WHITE='\[\033[0;37m\]'
+export PROMPT_BOLD='\[\033[1m\]'
+export PROMPT_RESET='\[\033[0m\]'
+
+# Cores para uso em ECHO e SCRIPTS (sem escape)
+export RED='\033[0;31m'
+export GREEN='\033[0;32m'
+export YELLOW='\033[0;33m'
+export BLUE='\033[0;34m'
+export PURPLE='\033[0;35m'
+export CYAN='\033[0;36m'
+export WHITE='\033[0;37m'
+export BOLD='\033[1m'
+export RESET='\033[0m'
 
 # ============================================
-# PROMPT CUSTOMIZADO (PS1)
+# FUNÇÕES PARA GIT NO PROMPT
 # ============================================
 
 # Função para obter a branch atual do Git
 parse_git_branch() {
-    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 # Função para obter o status do Git (limpo ou com alterações)
@@ -87,27 +117,55 @@ parse_git_dirty() {
     [[ $(git status --porcelain 2>/dev/null) ]] && echo "*"
 }
 
-# Prompt customizado com cores e informações do Git
-# Formato: [usuário@host diretório] (branch_git*) $
-PS1="${BOLD}${GREEN}┌──[${CYAN}\u${GREEN}@${CYAN}\h${GREEN}]─[${YELLOW}\w${GREEN}]"
-PS1+="\$(git_prompt)"
-PS1+="\n${GREEN}└─${BLUE}\$ ${RESET}"
+# ============================================
+# PROMPT CUSTOMIZADO (PS1)
+# ============================================
 
-# Função auxiliar para mostrar informações do Git no prompt
-git_prompt() {
-    local branch=$(parse_git_branch)
-    if [ -n "$branch" ]; then
-        local dirty=$(parse_git_dirty)
-        if [ -n "$dirty" ]; then
-            echo -e "${RED}─[${YELLOW}$branch${RED}$dirty${RED}]${RESET}"
-        else
-            echo -e "${GREEN}─[${YELLOW}$branch${GREEN}]${RESET}"
-        fi
-    fi
-}
+# Prompt customizado com cores e informações do Git
+# Linha 1: ┌──[usuário@host]─[diretório] (branch_git)
+# Linha 2: └─$
+PS1='${debian_chroot:+($debian_chroot)}'
+PS1+="${PROMPT_BOLD}${PROMPT_GREEN}┌──[${PROMPT_CYAN}\u${PROMPT_GREEN}@${PROMPT_CYAN}\h${PROMPT_GREEN}]─[${PROMPT_YELLOW}\w${PROMPT_GREEN}]"
+PS1+="${PROMPT_YELLOW}\$(parse_git_branch)\$(parse_git_dirty)${PROMPT_RESET}"
+PS1+="\n${PROMPT_GREEN}└─${PROMPT_BLUE}\$ ${PROMPT_RESET}"
 
 # Prompt para comandos de continuação (quando comando quebra em múltiplas linhas)
-PS2="${BLUE}> ${RESET}"
+PS2="${PROMPT_BLUE}> ${PROMPT_RESET}"
+
+# Define o título da janela do terminal (user@host:dir)
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# ============================================
+# SUPORTE A CORES EM COMANDOS
+# ============================================
+
+# Habilita suporte a cores para ls, grep, etc
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# ============================================
+# ALIASES PADRÃO DO SISTEMA
+# ============================================
+
+# Aliases básicos de ls (podem ser sobrescritos no .bash_aliases)
+alias ll='ls -alF'      # Lista detalhada incluindo arquivos ocultos
+alias la='ls -A'        # Lista todos exceto . e ..
+alias l='ls -CF'        # Lista em colunas com indicadores de tipo
+
+# Alias para notificação de comandos longos
+# Uso: sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # ============================================
 # AUTOCOMPLETE MELHORADO
@@ -123,26 +181,26 @@ if ! shopt -oq posix; then
 fi
 
 # Autocomplete ignora maiúsculas/minúsculas
-bind "set completion-ignore-case on"
+bind "set completion-ignore-case on" 2>/dev/null
 
 # Mostra opções de autocomplete imediatamente
-bind "set show-all-if-ambiguous on"
+bind "set show-all-if-ambiguous on" 2>/dev/null
 
 # Completa automaticamente após um TAB ao invés de mostrar opções
-bind "set menu-complete-display-prefix on"
+bind "set menu-complete-display-prefix on" 2>/dev/null
 
 # Adiciona "/" automaticamente ao completar diretórios
-bind "set mark-directories on"
-bind "set mark-symlinked-directories on"
+bind "set mark-directories on" 2>/dev/null
+bind "set mark-symlinked-directories on" 2>/dev/null
 
 # Completa nomes de hosts ao usar @
-bind "set mark-modified-lines on"
+bind "set mark-modified-lines on" 2>/dev/null
 
 # Mostra estatísticas de arquivos ao completar
-bind "set visible-stats on"
+bind "set visible-stats on" 2>/dev/null
 
 # Usa cores no autocomplete
-bind "set colored-stats on"
+bind "set colored-stats on" 2>/dev/null
 
 # ============================================
 # VARIÁVEIS DE AMBIENTE
@@ -161,16 +219,29 @@ export PAGER='less'
 # -F: sai automaticamente se conteúdo couber na tela
 export LESS='-R -X -F'
 
-# Adiciona diretórios ao PATH se existirem
-[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
-[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
-
 # Define idioma padrão (importante para ordenação e formatação)
 export LANG=pt_BR.UTF-8
 export LC_ALL=pt_BR.UTF-8
 
 # ============================================
-# FUNÇÕES ÚTEIS
+# PATH - CAMINHOS PERSONALIZADOS
+# ============================================
+
+# Adiciona ~/.local/bin ao PATH se existir (seus scripts pessoais)
+[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
+
+# Adiciona ~/bin ao PATH se existir
+[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
+
+# Adiciona composer bin ao PATH (PHP)
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+
+# Adiciona Herd Lite ao PATH (PHP)
+export PATH="/home/vdonoladev/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="/home/vdonoladev/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+# ============================================
+# FUNÇÕES ÚTEIS PERSONALIZADAS
 # ============================================
 
 # Cria um diretório e entra nele automaticamente
@@ -195,6 +266,9 @@ extract() {
             *.zip)       unzip "$1"       ;;
             *.Z)         uncompress "$1"  ;;
             *.7z)        7z x "$1"        ;;
+            *.deb)       ar x "$1"        ;;
+            *.tar.xz)    tar xf "$1"      ;;
+            *.tar.zst)   unzstd "$1"      ;;
             *)           echo "'$1' não pode ser extraído via extract()" ;;
         esac
     else
@@ -211,7 +285,7 @@ search() {
 # Mostra os 10 comandos mais usados
 # Uso: topcommands
 topcommands() {
-    history | awk '{print $4}' | sort | uniq -c | sort -rn | head -10
+    history | awk '{CMD[$4]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
 # Cria backup de um arquivo adicionando timestamp
@@ -231,20 +305,21 @@ dirsize() {
     du -sh */ 2>/dev/null | sort -hr
 }
 
-# Cria um servidor HTTP simples na porta 8000
-# Uso: serve (abre o diretório atual no navegador)
+# Cria um servidor HTTP simples na porta especificada (padrão: 8000)
+# Uso: serve [porta]
 serve() {
     local port="${1:-8000}"
+    echo "Servidor rodando em http://localhost:$port"
     python3 -m http.server "$port"
 }
 
-# Mostra uso de memória dos processos
+# Mostra uso de memória dos 10 processos que mais consomem
 # Uso: memtop
 memtop() {
     ps aux | sort -rnk 4 | head -10
 }
 
-# Mostra uso de CPU dos processos
+# Mostra uso de CPU dos 10 processos que mais consomem
 # Uso: cputop
 cputop() {
     ps aux | sort -rnk 3 | head -10
@@ -264,21 +339,52 @@ sysinfo() {
     df -h / | tail -1 | awk '{print "  Total: "$2" | Usado: "$3" | Livre: "$4" | Uso: "$5}'
 }
 
-# ============================================
-# INTEGRAÇÕES COM FERRAMENTAS
-# ============================================
+# Encontra arquivos grandes no diretório atual
+# Uso: bigfiles [tamanho_em_MB] (padrão: 100MB)
+bigfiles() {
+    local size="${1:-100}"
+    find . -type f -size +"${size}M" -exec ls -lh {} \; 2>/dev/null | awk '{ print $9 ": " $5 }'
+}
 
-# NVM (Node Version Manager) - Se instalado
+# Mostra portas abertas e processos associados
+# Uso: ports
+ports() {
+    sudo netstat -tulpn | grep LISTEN
+}
+
+# ============================================
+# NVM (Node Version Manager)
+# ============================================
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Carrega o NVM
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Carrega autocomplete do NVM
 
-# Python Virtual Environment
+# ============================================
+# HOMEBREW (Linuxbrew)
+# ============================================
+# Configura o ambiente do Homebrew (carrega apenas uma vez)
+if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# ============================================
+# PYTHON VIRTUAL ENVIRONMENT
+# ============================================
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
 
-# Rust (Cargo)
+# ============================================
+# RUST (Cargo)
+# ============================================
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# ============================================
+# ANGULAR CLI
+# ============================================
+# Carrega autocomplete do Angular CLI (se instalado)
+if command -v ng &> /dev/null; then
+    source <(ng completion script)
+fi
 
 # ============================================
 # CARREGA ALIASES PERSONALIZADOS
@@ -294,18 +400,18 @@ fi
 # MENSAGEM DE BOAS-VINDAS
 # ============================================
 
-# Mostra informações ao abrir o terminal (descomente se quiser)
+# Mostra informações ao abrir o terminal
 echo -e "${BOLD}${GREEN}Bem-vindo, $(whoami)!${RESET}"
 echo -e "Hoje é $(date '+%A, %d de %B de %Y - %H:%M:%S')"
 echo ""
 
-# Ou use neofetch se estiver instalado (descomente se quiser)
+# Ou use neofetch se estiver instalado (descomente se preferir)
 # if command -v neofetch &> /dev/null; then
 #     neofetch
 # fi
 
 # ============================================
-# CONFIGURAÇÕES ESPECÍFICAS POR MÁQUINA
+# CONFIGURAÇÕES LOCAIS ESPECÍFICAS
 # ============================================
 
 # Carrega configurações locais se existirem
@@ -313,3 +419,7 @@ echo ""
 if [ -f ~/.bashrc.local ]; then
     . ~/.bashrc.local
 fi
+
+# ============================================
+# FIM DA CONFIGURAÇÃO
+# ============================================
