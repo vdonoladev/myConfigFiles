@@ -316,13 +316,15 @@ serve() {
 # Mostra uso de memória dos 10 processos que mais consomem
 # Uso: memtop
 memtop() {
-    ps aux | sort -rnk 4 | head -10
+    echo -e "${BOLD}${CYAN}=== TOP 10 PROCESSOS POR USO DE MEMÓRIA ===${RESET}\n"
+    ps aux --sort=-%mem | awk 'NR==1{printf "%-10s %5s %5s %10s %s\n", $1, $3, $4, $6, $11} NR>1 && NR<=11{printf "%-10s %5s%% %5s%% %10s %s\n", $1, $3, $4, $6, $11}'
 }
 
 # Mostra uso de CPU dos 10 processos que mais consomem
 # Uso: cputop
 cputop() {
-    ps aux | sort -rnk 3 | head -10
+    echo -e "${BOLD}${CYAN}=== TOP 10 PROCESSOS POR USO DE CPU ===${RESET}\n"
+    ps aux --sort=-%cpu | awk 'NR==1{printf "%-10s %5s %5s %10s %s\n", $1, $3, $4, $6, $11} NR>1 && NR<=11{printf "%-10s %5s%% %5s%% %10s %s\n", $1, $3, $4, $6, $11}'
 }
 
 # Mostra informações do sistema de forma resumida
