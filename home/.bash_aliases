@@ -1,5 +1,5 @@
 # CONFIGURAÇÕES
-alias aliasconf='cursor .bash_aliases' # Abre o arquivo .bash_aliases no editor Cursor para edição rápida
+alias aliasconf='code .bash_aliases' # Abre o arquivo .bash_aliases no editor VSCode para edição rápida
 
 # COMANDOS
 alias cat='batcat' # Substitui o comando cat pelo batcat, que exibe arquivos com syntax highlighting
