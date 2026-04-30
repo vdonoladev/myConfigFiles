@@ -48,7 +48,7 @@ PROGRAMS_TO_INSTALL=(
 	snapd                       # Daemon do Snap (gerenciador de pacotes)
 	curl                        # Ferramenta para transferência de dados
 	ubuntu-restricted-extras    # Codecs multimídia e fontes
-	neofetch                    # Ferramenta que exibe informações do sistema
+	fastfetch                    # Ferramenta que exibe informações do sistema
 	code                        # Visual Studio Code
 	git                         # Sistema de controle de versão
 )

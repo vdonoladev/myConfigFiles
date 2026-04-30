@@ -219,9 +219,20 @@ export PAGER='less'
 # -F: sai automaticamente se conteúdo couber na tela
 export LESS='-R -X -F'
 
-# Define idioma padrão (importante para ordenação e formatação)
-export LANG=pt_BR.UTF-8
-export LC_ALL=pt_BR.UTF-8
+# ============================================
+# LOCALE - IDIOMA DO SISTEMA
+# ============================================
+
+# Usa pt_BR.UTF-8 apenas se o locale estiver instalado no sistema.
+# Caso contrário, usa en_US.UTF-8 para evitar erros de "cannot change locale".
+# Para instalar o locale pt_BR: sudo locale-gen pt_BR.UTF-8 && sudo update-locale
+if locale -a 2>/dev/null | grep -qi "pt_BR.UTF-8\|pt_BR.utf8"; then
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+else
+    export LANG=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+fi
 
 # ============================================
 # PATH - CAMINHOS PERSONALIZADOS
@@ -402,9 +413,19 @@ fi
 # MENSAGEM DE BOAS-VINDAS
 # ============================================
 
-# Mostra informações ao abrir o terminal
+# Nomes dos dias e meses em português (independente do locale do sistema)
+_dia_semana() {
+    local dias=("Domingo" "Segunda-feira" "Terça-feira" "Quarta-feira" "Quinta-feira" "Sexta-feira" "Sábado")
+    echo "${dias[$(date +%w)]}"
+}
+
+_mes() {
+    local meses=("" "janeiro" "fevereiro" "março" "abril" "maio" "junho" "julho" "agosto" "setembro" "outubro" "novembro" "dezembro")
+    echo "${meses[$(date +%-m)]}"
+}
+
 echo -e "${BOLD}${GREEN}Bem-vindo, $(whoami)!${RESET}"
-echo -e "Hoje é $(date '+%A, %d de %B de %Y - %H:%M:%S')"
+echo -e "Hoje é $(_dia_semana), $(date +%d) de $(_mes) de $(date +%Y) - $(date +%H:%M:%S)"
 echo ""
 
 # Ou use neofetch se estiver instalado (descomente se preferir)

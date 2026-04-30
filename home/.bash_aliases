@@ -1,9 +1,14 @@
 # CONFIGURAÇÕES
 alias aliasconf='code .bash_aliases' # Abre o arquivo .bash_aliases no editor VSCode para edição rápida
 
+# ATUALIZAÇÕES
+alias update='sudo apt update && sudo apt upgrade -y' # Atualiza a lista de pacotes e instala atualizações do sistema
+alias update-all='sudo apt update && sudo apt upgrade -y && sudo snap refresh && flatpak update -y' # Atualiza apt, snap e flatpak de uma vez
+alias update-snap='sudo snap refresh' # Atualiza todos os apps instalados via Snap
+alias update-flatpak='flatpak update -y' # Atualiza todos os apps instalados via Flatpak
+
 # COMANDOS
 alias cat='batcat' # Substitui o comando cat pelo batcat, que exibe arquivos com syntax highlighting
-alias update='sudo apt update && sudo apt upgrade -y' # Atualiza a lista de pacotes e instala atualizações do sistema
 alias ips='ip -c -br a' # Mostra os endereços IP de todas as interfaces de rede de forma colorida e resumida
 alias ls='exa' # Substitui o comando ls pelo exa, que lista arquivos com cores e ícones
 alias gh='history|grep' # Busca um comando específico no histórico do terminal
@@ -25,4 +30,4 @@ alias gcheckout='git checkout' # Muda de branch ou restaura arquivos
 
 # MISC
 alias please='sudo' # Permite usar "please" em vez de "sudo" para executar comandos como administrador
-alias nf='neofetch' # Exibe informações do sistema (distro, kernel, CPU, etc.) de forma estilizada
+alias nf='fastfetch' # Exibe informações do sistema (distro, kernel, CPU, etc.) de forma estilizada
