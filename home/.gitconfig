@@ -1,67 +1,82 @@
 # Informações do usuário que aparecerão nos commits
 [user]
-	name = vdonoladev                    # Nome do autor dos commits
-	email = victordonolaf@gmail.com      # Email do autor dos commits
+	name = vdonoladev                                                        # Nome do autor dos commits
+	email = victordonolaf@gmail.com                                          # Email do autor dos commits
 
 # Configurações de inicialização de repositórios
 [init]
-	defaultBranch = main                 # Nome padrão da branch principal (antes era "master")
+	defaultBranch = main                                                     # Nome padrão da branch principal (antes era "master")
 
 # Configurações principais do Git
 [core]
-	editor = code --wait                 # Define VS Code como editor padrão (--wait faz o Git esperar o editor fechar)
-	autocrlf = input                     # Converte CRLF (Windows) para LF (Linux/Mac) automaticamente
-	whitespace = trailing-space,space-before-tab  # Remove espaços em branco no final das linhas
+	editor = code --wait                                                     # Define VS Code como editor padrão (--wait faz o Git esperar o editor fechar)
+	autocrlf = input                                                         # Converte CRLF (Windows) para LF (Linux/Mac) automaticamente
+	whitespace = trailing-space,space-before-tab                             # Remove espaços em branco no final das linhas
+	pager = delta                                                            # Substitui o diff padrão pelo delta (syntax highlight) — requer: sudo apt install git-delta
+	excludesFile = ~/.gitignore_global                                       # Gitignore global para todos os projetos (.env, .DS_Store, etc.)
 
 # Configurações de cores no terminal
 [color]
-	ui = auto                            # Ativa cores automaticamente no Git
-	branch = auto                        # Coloriza saída do comando branch
-	diff = auto                          # Coloriza saída do comando diff
-	status = auto                        # Coloriza saída do comando status
+	ui = auto                                                                # Ativa cores automaticamente no Git
+	branch = auto                                                            # Coloriza saída do comando branch
+	diff = auto                                                              # Coloriza saída do comando diff
+	status = auto                                                            # Coloriza saída do comando status
 
 # Configurações de push (envio de commits)
 [push]
-	default = current                    # Faz push apenas da branch atual
-	autoSetupRemote = true               # Cria automaticamente a branch remota se não existir
+	default = current                                                        # Faz push apenas da branch atual
+	autoSetupRemote = true                                                   # Cria automaticamente a branch remota se não existir
 
 # Configurações de pull (recebimento de commits)
 [pull]
-	rebase = true                        # Usa rebase ao invés de merge no pull (histórico mais limpo)
+	rebase = true                                                            # Usa rebase ao invés de merge no pull (histórico mais limpo)
 
-# Aliases (atalhos personalizados para comandos Git)
-[alias]
-	st = status -sb                      # Atalho: git st (status resumido com branch)
-	cm = commit -m                       # Atalho: git cm "mensagem" (commit rápido)
-	lg = log --oneline --graph --decorate --all  # Atalho: git lg (log visual com gráfico)
-	undo = reset HEAD~1 --soft           # Atalho: git undo (desfaz último commit mantendo alterações)
-	last = log -1 HEAD --stat            # Atalho: git last (mostra detalhes do último commit)
-	br = branch --sort=-committerdate    # Atalho: git br (lista branches por data, mais recente primeiro)
-	up = pull --rebase --autostash       # Atalho: git up (atualiza repositório com rebase e stash automático)
+# Configurações de fetch (sincronização com remoto)
+[fetch]
+	prune = true                                                             # Remove branches remotas deletadas automaticamente no fetch/pull
+	pruneTags = true                                                         # Remove tags remotas deletadas também
 
 # Configurações de diff (comparação de alterações)
 [diff]
-	algorithm = histogram                # Usa algoritmo mais inteligente para diffs
-	renames = copies                     # Detecta quando arquivos são renomeados ou copiados
+	algorithm = histogram                                                    # Usa algoritmo mais inteligente para diffs
+	renames = copies                                                         # Detecta quando arquivos são renomeados ou copiados
+	colorMoved = default                                                     # Colore blocos de código movidos (diferente de adicionados/removidos)
 
 # Configurações de merge (mesclagem de branches)
 [merge]
-	ff = false                           # Sempre cria commit de merge (mantém histórico completo)
-	tool = vscode                        # Usa VS Code para resolver conflitos de merge
-	
+	ff = false                                                               # Sempre cria commit de merge (mantém histórico completo)
+	tool = vscode                                                            # Usa VS Code para resolver conflitos de merge
+	conflictstyle = zdiff3                                                   # Mostra o ancestral comum no conflito, facilita resolver
+
 # Configuração da ferramenta de merge do VS Code
 [mergetool "vscode"]
-	cmd = code --wait $MERGED            # Comando para abrir arquivo com conflito no VS Code
+	cmd = code --wait $MERGED                                                # Comando para abrir arquivo com conflito no VS Code
 
 # Configurações de rebase (reorganização de commits)
 [rebase]
-	autoStash = true                     # Salva alterações automaticamente antes do rebase
-	autoSquash = true                    # Combina commits marcados com fixup/squash automaticamente
+	autoStash = true                                                         # Salva alterações automaticamente antes do rebase
+	autoSquash = true                                                        # Combina commits marcados com fixup/squash automaticamente
 
 # Melhorias de performance
 [feature]
-	manyFiles = true                     # Otimiza Git para repositórios com muitos arquivos
+	manyFiles = true                                                         # Otimiza Git para repositórios com muitos arquivos
 
 # Configurações de credenciais
 [credential]
-	helper = cache --timeout=900         # Guarda credenciais em cache por 15 minutos (900 segundos)
+	helper = cache --timeout=900                                             # Guarda credenciais em cache por 15 minutos (900 segundos)
+
+# Aliases (atalhos personalizados para comandos Git)
+[alias]
+	st = status -sb                                                          # Status resumido com branch atual
+	cm = commit -m                                                           # Commit rápido com mensagem (uso: git cm "mensagem")
+	lg = log --oneline --graph --decorate --all                              # Log visual com gráfico de branches
+	undo = reset HEAD~1 --soft                                               # Desfaz último commit mantendo as alterações
+	last = log -1 HEAD --stat                                                # Mostra detalhes e arquivos do último commit
+	br = branch --sort=-committerdate                                        # Lista branches por data, mais recente primeiro
+	up = pull --rebase --autostash                                           # Atualiza com rebase e stash automático
+	wip = commit -am "wip"                                                   # Salva tudo rapidamente como work-in-progress
+	unstage = restore --staged .                                             # Tira todos os arquivos do staging
+	discard = restore .                                                      # Descarta todas as alterações não commitadas
+	stsh = stash --include-untracked                                         # Stash incluindo arquivos novos (não rastreados)
+	contributors = shortlog -sn --no-merges                                  # Ranking de commits por autor
+	aliases = config --get-regexp alias                                      # Lista todos os aliases configurados
