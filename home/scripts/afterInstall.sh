@@ -5,288 +5,339 @@
 # ============================================
 # Autor: vdonoladev
 # Descrição: Instala programas essenciais via APT, Flatpak e Snap
-# 
+#
 # COMO USAR:
-# sudo chmod +x afterInstall.sh
-# ./afterInstall.sh
+#   sudo chmod +x afterInstall.sh
+#   ./afterInstall.sh
+#
+# PARA ADICIONAR NOVOS PROGRAMAS, edite apenas as seções marcadas com
+# ">>> ADICIONE AQUI <<<" abaixo.
 # ============================================
 
-# Para a execução do script se qualquer comando retornar erro
-set -e
-
-# ============================================
-# VARIÁVEIS DE URL PARA DOWNLOAD
-# ============================================
-
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.3.2/ente-auth-v4.3.2-x86_64.deb"
-
-# ============================================
-# DIRETÓRIOS E ARQUIVOS
-# ============================================
-
-# Diretório onde os .deb baixados serão salvos
-DIRECTORY_DOWNLOADS="$HOME/Programs"
+set -euo pipefail
 
 # ============================================
 # CORES PARA OUTPUT NO TERMINAL
 # ============================================
 
-VERMELHO="\e[1;91m"     # Vermelho para erros
-VERDE="\e[1;92m"        # Verde para informações
-AMARELO="\e[1;93m"      # Amarelo para avisos
-WITHOUT_COLOR="\e[0m"   # Reseta a cor
+VERMELHO="\e[1;91m"
+VERDE="\e[1;92m"
+AMARELO="\e[1;93m"
+CIANO="\e[1;96m"
+BRANCO="\e[1;97m"
+SEM_COR="\e[0m"
 
 # ============================================
-# LISTA DE PROGRAMAS APT PARA INSTALAR
+# VARIÁVEIS GLOBAIS
 # ============================================
 
-# Programas disponíveis nos repositórios oficiais do Ubuntu/Debian
-PROGRAMS_TO_INSTALL=(
-	wget                        # Ferramenta para download de arquivos
-	flatpak                     # Sistema de empacotamento de aplicativos
-	snapd                       # Daemon do Snap (gerenciador de pacotes)
-	curl                        # Ferramenta para transferência de dados
-	ubuntu-restricted-extras    # Codecs multimídia e fontes
-	fastfetch                    # Ferramenta que exibe informações do sistema
-	code                        # Visual Studio Code
-	git                         # Sistema de controle de versão
+DIRECTORY_DOWNLOADS="$HOME/Programs"
+LOG_FILE="$HOME/afterInstall_$(date +%Y%m%d_%H%M%S).log"
+ERROS=()
+
+# ============================================
+# URLS DE PACOTES .DEB EXTERNOS
+# >>> ADICIONE AQUI novas URLs de .deb <<<
+# Formato: URL_NOME="https://..."
+# ============================================
+
+URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.3.2/ente-auth-v4.3.2-x86_64.deb"
+
+# Coloque as URLs acima neste array para que sejam baixadas automaticamente:
+DEB_URLS=(
+    "$URL_GOOGLE_CHROME"
+    "$URL_ENTE_AUTH"
+    # >>> ADICIONE AQUI mais URLs de .deb <<<
+    # Exemplo: "https://exemplo.com/programa.deb"
 )
 
 # ============================================
-# LISTA DE PROGRAMAS SNAP PARA INSTALAR
+# PROGRAMAS APT
+# >>> ADICIONE AQUI novos pacotes APT <<<
+# Formato: "nome_do_pacote"
 # ============================================
 
-# Array associativo: "nome_do_pacote:flags:descrição"
-declare -A SNAP_PROGRAMS=(
-	["phpstorm"]="--classic:IDE para PHP da JetBrains"
-	["rider"]="--classic:IDE para .NET da JetBrains"
+PROGRAMS_APT=(
+    wget
+    flatpak
+    snapd
+    curl
+    ubuntu-restricted-extras
+    fastfetch
+    code
+    git
+    # >>> ADICIONE AQUI mais pacotes APT <<<
+    # Exemplo: "htop"
+    # Exemplo: "vlc"
 )
 
 # ============================================
-# LISTA DE PROGRAMAS FLATPAK PARA INSTALAR
+# PROGRAMAS SNAP
+# >>> ADICIONE AQUI novos pacotes Snap <<<
+# Formato: "nome_do_snap|--flag|Descrição amigável"
+# Flags comuns: --classic, --beta, --edge (ou deixe vazio)
 # ============================================
 
-# Array associativo: "id_do_app:nome_amigável"
-declare -A FLATPAK_PROGRAMS=(
-	["com.bitwarden.desktop"]="Bitwarden"
-	["org.telegram.desktop"]="Telegram"
-	["org.localsend.localsend_app"]="LocalSend"
-	["io.github.flattool.Warehouse"]="Warehouse"
-	["com.discordapp.Discord"]="Discord"
-	["com.spotify.Client"]="Spotify"
-	["org.videolan.VLC"]="VLC"
+PROGRAMS_SNAP=(
+    "phpstorm|--classic|PHPStorm - IDE para PHP"
+    "rider|--classic|Rider - IDE para .NET"
+    # >>> ADICIONE AQUI mais pacotes Snap <<<
+    # Exemplo: "spotify||Spotify"
+    # Exemplo: "vlc||VLC Media Player"
 )
 
 # ============================================
-# FUNÇÕES DO SCRIPT
+# PROGRAMAS FLATPAK
+# >>> ADICIONE AQUI novos pacotes Flatpak <<<
+# Formato: "id.do.app|Nome Amigável"
 # ============================================
 
-# Atualiza repositórios e realiza atualização completa do sistema
-apt_update() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Atualizando repositórios e sistema...${WITHOUT_COLOR}"
-	sudo apt update && sudo apt dist-upgrade -y
-}
-
-# Testa conexão com a internet antes de continuar
-testing_internet() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Testando conexão com a internet...${WITHOUT_COLOR}"
-	if ! ping -c 1 8.8.8.8 &>/dev/null; then
-		echo -e "${VERMELHO}[ERRO!] - O computador não tem conexão com a Internet. Verifique sua rede.${WITHOUT_COLOR}"
-		exit 1
-	else
-		echo -e "${VERDE}[INFORMAÇÃO!] - Conexão com a internet está funcionando normalmente.${WITHOUT_COLOR}"
-	fi
-}
-
-# Remove locks do APT que podem estar travando o gerenciador de pacotes
-lock_apt() {
-	echo -e "${AMARELO}[INFORMAÇÃO!] - Removendo locks do APT...${WITHOUT_COLOR}"
-	sudo rm -f /var/lib/dpkg/lock-frontend
-	sudo rm -f /var/cache/apt/archives/lock
-}
-
-# Adiciona suporte para arquitetura de 32 bits (necessário para alguns programas)
-add_archi386() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Adicionando arquitetura i386 (32 bits)...${WITHOUT_COLOR}"
-	sudo dpkg --add-architecture i386
-}
-
-# Atualiza apenas a lista de pacotes (mais rápido que dist-upgrade)
-just_apt_update() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Atualizando lista de pacotes...${WITHOUT_COLOR}"
-	sudo apt update -y
-}
+PROGRAMS_FLATPAK=(
+    "com.bitwarden.desktop|Bitwarden"
+    "org.telegram.desktop|Telegram"
+    "org.localsend.localsend_app|LocalSend"
+    "io.github.flattool.Warehouse|Warehouse"
+    "com.discordapp.Discord|Discord"
+    "com.spotify.Client|Spotify"
+    "org.videolan.VLC|VLC"
+    # >>> ADICIONE AQUI mais pacotes Flatpak <<<
+    # Exemplo: "org.gimp.GIMP|GIMP"
+    # Exemplo: "com.obsproject.Studio|OBS Studio"
+)
 
 # ============================================
-# INSTALAÇÃO DO SNAPD
+# FUNÇÕES AUXILIARES
 # ============================================
 
-install_snapd() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Verificando instalação do Snapd...${WITHOUT_COLOR}"
-	
-	# Verifica se o snap já está instalado
-	if ! command -v snap &> /dev/null; then
-		echo -e "${VERDE}[INFORMAÇÃO!] - Instalando Snapd...${WITHOUT_COLOR}"
-		sudo apt install snapd -y
-		
-		# Habilita e inicia o serviço do Snap
-		sudo systemctl enable --now snapd.socket
-		
-		# Cria link simbólico para suporte clássico do snap
-		sudo ln -sf /var/lib/snapd/snap /snap
-		
-		echo -e "${VERDE}[INFORMAÇÃO!] - Snapd instalado com sucesso!${WITHOUT_COLOR}"
-	else
-		echo -e "${VERDE}[INFORMAÇÃO!] - Snapd já está instalado.${WITHOUT_COLOR}"
-	fi
+log() {
+    echo -e "$1" | tee -a "$LOG_FILE"
+}
+
+info()    { log "${VERDE}[INFO]  $*${SEM_COR}"; }
+aviso()   { log "${AMARELO}[AVISO] $*${SEM_COR}"; }
+erro()    { log "${VERMELHO}[ERRO]  $*${SEM_COR}"; }
+titulo()  { log "\n${CIANO}${BRANCO}>>> $* <<<${SEM_COR}"; }
+
+registrar_erro() {
+    ERROS+=("$1")
+    erro "$1"
+}
+
+comando_existe() {
+    command -v "$1" &>/dev/null
 }
 
 # ============================================
-# DOWNLOAD E INSTALAÇÃO DE PACOTES .DEB
+# VERIFICAÇÕES INICIAIS
 # ============================================
 
-install_debs() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Baixando pacotes .deb externos...${WITHOUT_COLOR}"
+verificar_root() {
+    if [[ "$EUID" -eq 0 ]]; then
+        erro "Não execute este script como root/sudo diretamente."
+        erro "Execute como usuário normal: ./afterInstall.sh"
+        exit 1
+    fi
+}
 
-	# Cria o diretório de downloads se não existir
-	mkdir -p "$DIRECTORY_DOWNLOADS"
-	
-	# Baixa os pacotes .deb das URLs definidas
-	wget -c "$URL_GOOGLE_CHROME" -P "$DIRECTORY_DOWNLOADS"
-	wget -c "$URL_ENTE_AUTH" -P "$DIRECTORY_DOWNLOADS"
-
-	# Instala todos os pacotes .deb baixados
-	echo -e "${VERDE}[INFORMAÇÃO!] - Instalando pacotes .deb baixados...${WITHOUT_COLOR}"
-	sudo dpkg -i "$DIRECTORY_DOWNLOADS"/*.deb
-	
-	# Corrige possíveis dependências quebradas
-	sudo apt --fix-broken install -y
+testar_internet() {
+    titulo "Testando conexão com a internet"
+    if ! ping -c 1 8.8.8.8 &>/dev/null; then
+        erro "Sem conexão com a internet. Verifique sua rede e tente novamente."
+        exit 1
+    fi
+    info "Conexão OK."
 }
 
 # ============================================
-# INSTALAÇÃO DE PROGRAMAS VIA APT
+# APT
 # ============================================
 
-install_apt_programs() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Instalando programas do repositório APT...${WITHOUT_COLOR}"
+remover_locks_apt() {
+    info "Removendo locks do APT..."
+    sudo rm -f /var/lib/dpkg/lock-frontend
+    sudo rm -f /var/cache/apt/archives/lock
+}
 
-	# Loop que percorre cada programa da lista
-	for program_name in "${PROGRAMS_TO_INSTALL[@]}"; do
-		# Verifica se o programa já está instalado
-		if ! dpkg -l | grep -q "^ii  $program_name"; then
-			echo -e "${VERDE}[INSTALANDO] - $program_name${WITHOUT_COLOR}"
-			sudo apt install "$program_name" -y
-		else
-			echo -e "${AMARELO}[JÁ INSTALADO!] - $program_name${WITHOUT_COLOR}"
-		fi
-	done
+atualizar_sistema() {
+    titulo "Atualizando repositórios e sistema"
+    remover_locks_apt
+    sudo apt update -y
+    sudo apt dist-upgrade -y
+}
+
+instalar_apt() {
+    titulo "Instalando programas via APT"
+    for programa in "${PROGRAMS_APT[@]}"; do
+        if dpkg -l | grep -q "^ii  $programa "; then
+            aviso "Já instalado: $programa"
+        else
+            info "Instalando: $programa"
+            if sudo apt install "$programa" -y; then
+                info "Instalado com sucesso: $programa"
+            else
+                registrar_erro "Falha ao instalar via APT: $programa"
+            fi
+        fi
+    done
 }
 
 # ============================================
-# INSTALAÇÃO DE PROGRAMAS VIA SNAP
+# PACOTES .DEB EXTERNOS
 # ============================================
 
-install_snaps() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Instalando programas via Snap...${WITHOUT_COLOR}"
+instalar_debs() {
+    titulo "Baixando e instalando pacotes .deb externos"
+    mkdir -p "$DIRECTORY_DOWNLOADS"
 
-	# Loop que percorre cada programa Snap
-	for snap_name in "${!SNAP_PROGRAMS[@]}"; do
-		# Separa as flags e descrição
-		IFS=':' read -r flags description <<< "${SNAP_PROGRAMS[$snap_name]}"
-		
-		# Verifica se o snap já está instalado
-		if snap list | grep -q "^$snap_name"; then
-			echo -e "${AMARELO}[JÁ INSTALADO!] - $description${WITHOUT_COLOR}"
-		else
-			echo -e "${VERDE}[INSTALANDO] - $description${WITHOUT_COLOR}"
-			# Instala o snap com as flags apropriadas
-			sudo snap install "$snap_name" $flags
-		fi
-	done
+    for url in "${DEB_URLS[@]}"; do
+        nome_arquivo=$(basename "$url")
+        destino="$DIRECTORY_DOWNLOADS/$nome_arquivo"
+
+        info "Baixando: $nome_arquivo"
+        if wget -c "$url" -O "$destino" 2>>"$LOG_FILE"; then
+            info "Download concluído: $nome_arquivo"
+        else
+            registrar_erro "Falha no download: $url"
+        fi
+    done
+
+    info "Instalando pacotes .deb baixados..."
+    if sudo dpkg -i "$DIRECTORY_DOWNLOADS"/*.deb 2>>"$LOG_FILE"; then
+        info "Pacotes .deb instalados."
+    else
+        aviso "Alguns .debs falharam. Tentando corrigir dependências..."
+    fi
+
+    sudo apt --fix-broken install -y
 }
 
 # ============================================
-# INSTALAÇÃO DE PROGRAMAS VIA FLATPAK
+# SNAPD
 # ============================================
 
-install_flatpaks() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Instalando programas via Flatpak...${WITHOUT_COLOR}"
+instalar_snapd() {
+    titulo "Verificando Snapd"
+    if ! comando_existe snap; then
+        info "Instalando Snapd..."
+        sudo apt install snapd -y
+        sudo systemctl enable --now snapd.socket
+        sudo ln -sf /var/lib/snapd/snap /snap
+        info "Snapd instalado."
+    else
+        aviso "Snapd já está instalado."
+    fi
+}
 
-	# Adiciona o repositório Flathub se não existir
-	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+instalar_snaps() {
+    titulo "Instalando programas via Snap"
+    for entrada in "${PROGRAMS_SNAP[@]}"; do
+        IFS='|' read -r nome flags descricao <<< "$entrada"
 
-	# Loop que percorre cada programa Flatpak
-	for flatpak_id in "${!FLATPAK_PROGRAMS[@]}"; do
-		flatpak_name="${FLATPAK_PROGRAMS[$flatpak_id]}"
-		
-		# Verifica se o flatpak já está instalado
-		if flatpak list | grep -q "$flatpak_id"; then
-			echo -e "${AMARELO}[JÁ INSTALADO!] - $flatpak_name${WITHOUT_COLOR}"
-		else
-			echo -e "${VERDE}[INSTALANDO] - $flatpak_name${WITHOUT_COLOR}"
-			# Instala o flatpak do Flathub (-y confirma automaticamente)
-			flatpak install flathub "$flatpak_id" -y
-		fi
-	done
+        if snap list 2>/dev/null | grep -q "^$nome "; then
+            aviso "Já instalado: $descricao"
+        else
+            info "Instalando: $descricao"
+            # shellcheck disable=SC2086
+            if sudo snap install "$nome" $flags; then
+                info "Instalado com sucesso: $descricao"
+            else
+                registrar_erro "Falha ao instalar via Snap: $descricao ($nome)"
+            fi
+        fi
+    done
 }
 
 # ============================================
-# LIMPEZA E FINALIZAÇÃO DO SISTEMA
+# FLATPAK
 # ============================================
 
-system_clean() {
-	echo -e "${VERDE}[INFORMAÇÃO!] - Executando limpeza do sistema...${WITHOUT_COLOR}"
-	
-	# Atualiza todos os sistemas de pacotes
-	apt_update
-	flatpak update -y
-	sudo snap refresh
-	
-	# Remove pacotes desnecessários e limpa cache
-	sudo apt autoclean -y
-	sudo apt autoremove -y
-	
-	echo -e "${VERDE}[INFORMAÇÃO!] - Limpeza concluída!${WITHOUT_COLOR}"
+instalar_flatpaks() {
+    titulo "Instalando programas via Flatpak"
+
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+    for entrada in "${PROGRAMS_FLATPAK[@]}"; do
+        IFS='|' read -r id nome <<< "$entrada"
+
+        if flatpak list 2>/dev/null | grep -q "$id"; then
+            aviso "Já instalado: $nome"
+        else
+            info "Instalando: $nome"
+            if flatpak install flathub "$id" -y; then
+                info "Instalado com sucesso: $nome"
+            else
+                registrar_erro "Falha ao instalar via Flatpak: $nome ($id)"
+            fi
+        fi
+    done
 }
 
 # ============================================
-# EXECUÇÃO DO SCRIPT
+# LIMPEZA FINAL
 # ============================================
 
-echo -e "${VERDE}========================================${WITHOUT_COLOR}"
-echo -e "${VERDE}  SCRIPT DE PÓS-INSTALAÇÃO${WITHOUT_COLOR}"
-echo -e "${VERDE}========================================${WITHOUT_COLOR}"
-echo ""
-
-# Sequência de execução das funções
-lock_apt                  # Remove locks do APT
-testing_internet          # Testa conexão com internet
-lock_apt                  # Remove locks novamente por segurança
-apt_update                # Atualiza sistema
-lock_apt                  # Remove locks após atualização
-add_archi386              # Adiciona suporte 32 bits
-just_apt_update           # Atualiza lista de pacotes
-install_snapd             # Instala o Snapd
-install_debs              # Baixa e instala .debs externos
-install_apt_programs      # Instala programas APT
-install_flatpaks          # Instala programas Flatpak
-install_snaps             # Instala programas Snap
-apt_update                # Atualização final
-system_clean              # Limpeza final do sistema
+limpeza_final() {
+    titulo "Limpeza e atualização final"
+    sudo apt update && sudo apt dist-upgrade -y
+    flatpak update -y
+    sudo snap refresh
+    sudo apt autoclean -y
+    sudo apt autoremove -y
+    info "Limpeza concluída."
+}
 
 # ============================================
-# MENSAGEM FINAL
+# RESUMO FINAL
 # ============================================
 
-echo ""
-echo -e "${VERDE}========================================${WITHOUT_COLOR}"
-echo -e "${VERDE}[SUCESSO!] - Script finalizado!${WITHOUT_COLOR}"
-echo -e "${VERDE}========================================${WITHOUT_COLOR}"
-echo ""
-echo -e "${AMARELO}OBSERVAÇÕES IMPORTANTES:${WITHOUT_COLOR}"
-echo -e "  • Alguns aplicativos Snap podem precisar de logout/login"
-echo -e "  • Aplicativos Flatpak estarão disponíveis no menu de aplicativos"
-echo -e "  • Recomenda-se reiniciar o sistema após a instalação"
-echo ""
-echo -e "${VERDE}Instalação concluída com sucesso! :)${WITHOUT_COLOR}"
+exibir_resumo() {
+    echo ""
+    log "${VERDE}========================================${SEM_COR}"
+    log "${VERDE}           INSTALAÇÃO CONCLUÍDA         ${SEM_COR}"
+    log "${VERDE}========================================${SEM_COR}"
+
+    if [[ ${#ERROS[@]} -eq 0 ]]; then
+        log "${VERDE}✓ Tudo instalado sem erros!${SEM_COR}"
+    else
+        log "${AMARELO}⚠ Instalação concluída com ${#ERROS[@]} erro(s):${SEM_COR}"
+        for err in "${ERROS[@]}"; do
+            log "  ${VERMELHO}• $err${SEM_COR}"
+        done
+    fi
+
+    echo ""
+    log "${AMARELO}OBSERVAÇÕES:${SEM_COR}"
+    log "  • Snaps podem precisar de logout/login para funcionar"
+    log "  • Flatpaks estarão disponíveis no menu de aplicativos"
+    log "  • Recomenda-se reiniciar o sistema"
+    log "  • Log completo salvo em: ${LOG_FILE}"
+    echo ""
+}
+
+# ============================================
+# EXECUÇÃO PRINCIPAL
+# ============================================
+
+main() {
+    # Cabeçalho
+    clear
+    log "${VERDE}========================================"
+    log "     SCRIPT DE PÓS-INSTALAÇÃO LINUX     "
+    log "========================================${SEM_COR}"
+    log "Log: ${LOG_FILE}"
+    echo ""
+
+    verificar_root
+    testar_internet
+    atualizar_sistema
+    instalar_snapd
+    instalar_debs
+    instalar_apt
+    instalar_flatpaks
+    instalar_snaps
+    limpeza_final
+    exibir_resumo
+}
+
+main "$@"
