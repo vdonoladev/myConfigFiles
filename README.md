@@ -79,9 +79,12 @@ myConfigFiles/
     ├── .config/
     │   └── Code/
     │       └── User/
-    │           └── settings.json  # Configurações do VS Code
+    │           └── settings.json        # Configurações do VS Code
+    |   └── zed
+    |       └── settings.json            # Configurações do Zed
     └── scripts/
-        └── afterInstall.sh        # Script de pós-instalação
+        └── afterInstall.sh              # Script de pós-instalação
+        └── installJetbrainsToolbox.sh   # Script de instalação do Jetbrains-Toolbox
 ```
 
 ---
