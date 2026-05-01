@@ -9,9 +9,6 @@
 # COMO USAR:
 #   sudo chmod +x afterInstall.sh
 #   ./afterInstall.sh
-#
-# PARA ADICIONAR NOVOS PROGRAMAS, edite apenas as seções marcadas com
-# ">>> ADICIONE AQUI <<<" abaixo.
 # ============================================
 
 set -euo pipefail
@@ -37,25 +34,19 @@ ERROS=()
 
 # ============================================
 # URLS DE PACOTES .DEB EXTERNOS
-# >>> ADICIONE AQUI novas URLs de .deb <<<
-# Formato: URL_NOME="https://..."
 # ============================================
 
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.3.2/ente-auth-v4.3.2-x86_64.deb"
+URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
+URL_1PASSWORD="https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb"
 
 # Coloque as URLs acima neste array para que sejam baixadas automaticamente:
 DEB_URLS=(
-    "$URL_GOOGLE_CHROME"
     "$URL_ENTE_AUTH"
-    # >>> ADICIONE AQUI mais URLs de .deb <<<
-    # Exemplo: "https://exemplo.com/programa.deb"
+    "$URL_1PASSWORD"
 )
 
 # ============================================
 # PROGRAMAS APT
-# >>> ADICIONE AQUI novos pacotes APT <<<
-# Formato: "nome_do_pacote"
 # ============================================
 
 PROGRAMS_APT=(
@@ -67,43 +58,40 @@ PROGRAMS_APT=(
     fastfetch
     code
     git
-    # >>> ADICIONE AQUI mais pacotes APT <<<
-    # Exemplo: "htop"
-    # Exemplo: "vlc"
 )
 
 # ============================================
 # PROGRAMAS SNAP
-# >>> ADICIONE AQUI novos pacotes Snap <<<
-# Formato: "nome_do_snap|--flag|Descrição amigável"
-# Flags comuns: --classic, --beta, --edge (ou deixe vazio)
 # ============================================
 
 PROGRAMS_SNAP=(
-    "phpstorm|--classic|PHPStorm - IDE para PHP"
-    "rider|--classic|Rider - IDE para .NET"
-    # >>> ADICIONE AQUI mais pacotes Snap <<<
-    # Exemplo: "spotify||Spotify"
-    # Exemplo: "vlc||VLC Media Player"
+    "vlc|VLC Media Player"
 )
 
 # ============================================
 # PROGRAMAS FLATPAK
-# >>> ADICIONE AQUI novos pacotes Flatpak <<<
-# Formato: "id.do.app|Nome Amigável"
 # ============================================
 
 PROGRAMS_FLATPAK=(
+    "io.github.kolunmi.Bazaar|Bazaar"
     "com.bitwarden.desktop|Bitwarden"
-    "org.telegram.desktop|Telegram"
-    "org.localsend.localsend_app|LocalSend"
-    "io.github.flattool.Warehouse|Warehouse"
+    "io.github.shonebinu.Brief|Brief"
     "com.discordapp.Discord|Discord"
+    "com.mattjakeman.ExtensionManager|Extension Manager"
+    "it.mijorus.gearlever|Gear Lever"
+    "be.alexandervanhee.gradia|Gradia"
+    "org.localsend.localsend_app|LocalSend"
+    "io.missioncenter.MissionCenter|Mission Center"
+    "io.github.subhra74.Muon|Muon"
+    "io.github.alainm23.planify|Planify"
+    "com.getpostman.Postman|Postman"
+    "io.github.smolblackcat.Progress|Progress"
     "com.spotify.Client|Spotify"
-    "org.videolan.VLC|VLC"
-    # >>> ADICIONE AQUI mais pacotes Flatpak <<<
-    # Exemplo: "org.gimp.GIMP|GIMP"
-    # Exemplo: "com.obsproject.Studio|OBS Studio"
+    "best.ellie.StartupConfiguration|Startup Configuration"
+    "io.gitlab.adhami3310.Converter|Converter"
+    "org.telegram.desktop|Telegram"
+    "io.github.flattool.Warehouse|Warehouse"
+    "com.rtosta.zapzap|ZapZap"
 )
 
 # ============================================
@@ -274,6 +262,25 @@ instalar_flatpaks() {
 }
 
 # ============================================
+# ZED EDITOR
+# ============================================
+
+instalar_zed() {
+    titulo "Instalando Zed Editor"
+    if comando_existe zed; then
+        aviso "Zed já está instalado."
+        return
+    fi
+
+    info "Baixando e instalando o Zed..."
+    if curl -f https://zed.dev/install.sh | sh >> "$LOG_FILE" 2>&1; then
+        info "Zed instalado com sucesso."
+    else
+        registrar_erro "Falha ao instalar o Zed."
+    fi
+}
+
+# ============================================
 # LIMPEZA FINAL
 # ============================================
 
@@ -336,6 +343,7 @@ main() {
     instalar_apt
     instalar_flatpaks
     instalar_snaps
+    instalar_zed
     limpeza_final
     exibir_resumo
 }

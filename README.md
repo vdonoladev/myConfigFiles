@@ -590,10 +590,11 @@ Script de pós-instalação para sistemas baseados em Debian/Ubuntu. Automatiza 
 
 | Método | Pacotes |
 | --- | --- |
-| `.deb` | Google Chrome, Ente Auth |
+| `.deb` | Ente Auth, 1Password |
 | APT | wget, curl, git, flatpak, snapd, VS Code, fastfetch, ubuntu-restricted-extras |
-| Flatpak | Bitwarden, Telegram, Discord, Spotify, VLC, LocalSend, Warehouse |
-| Snap | PHPStorm (`--classic`), Rider (`--classic`) |
+| Flatpak | Bitwarden, Telegram, Discord, Spotify, LocalSend, Warehouse e outros |
+| Snap | VLC |
+| Script oficial | Zed Editor |
 
 #### Como Adicionar Novos Programas
 
@@ -845,8 +846,8 @@ Lista completa dos programas instalados pelo `afterInstall.sh`.
 
 | Aplicativo | Descrição |
 | --- | --- |
-| [Google Chrome](https://www.google.com/chrome/) | Navegador |
 | [Ente Auth](https://ente.io/auth/) | Autenticador 2FA de código aberto |
+| [1Password](https://1password.com/) | Gerenciador de senhas |
 
 ### Via APT
 
@@ -865,20 +866,37 @@ Lista completa dos programas instalados pelo `afterInstall.sh`.
 
 | Aplicativo | Descrição |
 | --- | --- |
+| [Bazaar](https://github.com/kolunmi/bazaar) | Loja de apps alternativa |
 | [Bitwarden](https://bitwarden.com/) | Gerenciador de senhas |
-| [Telegram](https://telegram.org/) | Mensageiro |
-| [LocalSend](https://localsend.org/) | Transferência de arquivos na rede local |
-| [Warehouse](https://github.com/flattool/warehouse) | Gerenciador visual de apps Flatpak |
+| [Brief](https://github.com/shonebinu/Brief) | Leitor de RSS |
 | [Discord](https://discord.com/) | Comunicação por voz, vídeo e texto |
+| [Extension Manager](https://github.com/mjakeman/extension-manager) | Gerenciador de extensões do GNOME |
+| [Gear Lever](https://github.com/mijorus/gearlever) | Gerenciador de AppImages |
+| [Gradia](https://github.com/alexandervanhee/gradia) | Editor de capturas de tela |
+| [LocalSend](https://localsend.org/) | Transferência de arquivos na rede local |
+| [Mission Center](https://missioncenter.io/) | Monitor do sistema estilo Gerenciador de Tarefas |
+| [Muon](https://github.com/subhra74/muon) | Cliente SSH e SFTP |
+| [Planify](https://github.com/alainm23/planify) | Gerenciador de tarefas |
+| [Postman](https://www.postman.com/) | Plataforma para testes de API |
+| [Progress](https://github.com/smolblackcat/Progress) | Rastreador de progresso pessoal |
 | [Spotify](https://www.spotify.com/) | Streaming de música |
-| [VLC](https://www.videolan.org/) | Player de mídia universal |
+| [Startup Configuration](https://github.com/ellie-commons/startup-configuration) | Gerencia apps de inicialização |
+| [Converter](https://gitlab.com/adhami3310/Converter) | Conversor de unidades e arquivos |
+| [Telegram](https://telegram.org/) | Mensageiro |
+| [Warehouse](https://github.com/flattool/warehouse) | Gerenciador visual de apps Flatpak |
+| [ZapZap](https://github.com/rafatosta/zapzap) | Cliente desktop do WhatsApp |
 
 ### Via Snap
 
-| Aplicativo | Flag | Descrição |
+| Aplicativo | Descrição |
+| --- | --- |
+| [VLC](https://www.videolan.org/) | Player de mídia universal |
+
+### Via Script Oficial
+
+| Aplicativo | Comando | Descrição |
 | --- | --- | --- |
-| [PHPStorm](https://www.jetbrains.com/phpstorm/) | `--classic` | IDE para PHP da JetBrains |
-| [Rider](https://www.jetbrains.com/rider/) | `--classic` | IDE para .NET da JetBrains |
+| [Zed](https://zed.dev/) | `curl -f https://zed.dev/install.sh \| sh` | Editor de código rápido e moderno |
 
 ---
 
@@ -889,9 +907,7 @@ Extensões utilizadas no Google Chrome:
 | Extensão | Descrição |
 | --- | --- |
 | [1Password](https://chromewebstore.google.com/detail/1password-%E2%80%93-password-mana/aeblfdkhhhdcdjpifhhbdiojplfjncoa) | Gerenciador de senhas |
-| [Chrome Remote Desktop](https://chromewebstore.google.com/detail/chrome-remote-desktop/inomeogfingihgjfjlpeplalcfajhgai) | Acesso remoto ao computador |
 | [Integração com GNOME Shell](https://chromewebstore.google.com/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep) | Instala extensões do GNOME direto pelo navegador |
-| [Documentos Google off-line](https://chromewebstore.google.com/detail/documentos-google-off-lin/ghbmnnjooekpmoecnnnilnnbdlolhkhi) | Acesso offline ao Google Docs, Sheets e Slides |
 | [Inoreader](https://chromewebstore.google.com/detail/inoreader-read-later-and/kfimphpokifbjgmjflanmfeppcjimgah) | Leitor RSS e salvamento de artigos |
 | [Notion Web Clipper](https://chromewebstore.google.com/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk) | Salva páginas web direto no Notion |
 
