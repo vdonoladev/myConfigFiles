@@ -49,6 +49,7 @@ chmod +x afterInstall.sh
 | 1Password | Gerenciador de senhas |
 | DBeaver CE | Cliente universal de banco de dados |
 | Ente Auth | Autenticador 2FA de código aberto |
+| Little Snitch | Monitoramento de rede |
 | OnlyOffice Desktop | Suite de escritório |
 | Upscayl | Upscaling de imagens com IA |
 | VeraCrypt | Criptografia de disco |
