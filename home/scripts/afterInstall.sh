@@ -36,13 +36,21 @@ ERROS=()
 # URLS DE PACOTES .DEB EXTERNOS
 # ============================================
 
-URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
 URL_1PASSWORD="https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb"
+URL_DBEAVER="https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb"
+URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
+URL_ONLYOFFICE="https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb"
+URL_UPSCAYL="https://github.com/upscayl/upscayl/releases/download/v2.15.0/upscayl-2.15.0-linux.deb"
+URL_VERACRYPT="https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb"
 
 # Coloque as URLs acima neste array para que sejam baixadas automaticamente:
 DEB_URLS=(
-    "$URL_ENTE_AUTH"
     "$URL_1PASSWORD"
+    "$URL_DBEAVER"
+    "$URL_ENTE_AUTH"
+    "$URL_ONLYOFFICE"
+    "$URL_UPSCAYL"
+    "$URL_VERACRYPT"
 )
 
 # ============================================
@@ -50,14 +58,14 @@ DEB_URLS=(
 # ============================================
 
 PROGRAMS_APT=(
-    wget
-    flatpak
-    snapd
-    curl
-    ubuntu-restricted-extras
-    fastfetch
-    code
-    git
+    wget # wget
+    flatpak # flatpak
+    snapd # snapd
+    curl # curl
+    ubuntu-restricted-extras # ubuntu-restricted-extras
+    fastfetch # fastfetch
+    code # code
+    git # git
 )
 
 # ============================================
@@ -65,7 +73,7 @@ PROGRAMS_APT=(
 # ============================================
 
 PROGRAMS_SNAP=(
-    "vlc|VLC Media Player"
+    "vlc|VLC Media Player" # VLC Media Player
 )
 
 # ============================================
@@ -73,25 +81,26 @@ PROGRAMS_SNAP=(
 # ============================================
 
 PROGRAMS_FLATPAK=(
-    "io.github.kolunmi.Bazaar|Bazaar"
-    "com.bitwarden.desktop|Bitwarden"
-    "io.github.shonebinu.Brief|Brief"
-    "com.discordapp.Discord|Discord"
-    "com.mattjakeman.ExtensionManager|Extension Manager"
-    "it.mijorus.gearlever|Gear Lever"
-    "be.alexandervanhee.gradia|Gradia"
-    "org.localsend.localsend_app|LocalSend"
-    "io.missioncenter.MissionCenter|Mission Center"
-    "io.github.subhra74.Muon|Muon"
-    "io.github.alainm23.planify|Planify"
-    "com.getpostman.Postman|Postman"
-    "io.github.smolblackcat.Progress|Progress"
-    "com.spotify.Client|Spotify"
-    "best.ellie.StartupConfiguration|Startup Configuration"
-    "io.gitlab.adhami3310.Converter|Converter"
-    "org.telegram.desktop|Telegram"
-    "io.github.flattool.Warehouse|Warehouse"
-    "com.rtosta.zapzap|ZapZap"
+    "io.github.kolunmi.Bazaar|Bazaar" # Bazaar
+    "com.bitwarden.desktop|Bitwarden" # Bitwarden
+    "io.github.shonebinu.Brief|Brief" # Brief
+    "com.discordapp.Discord|Discord" # Discord
+    "com.mattjakeman.ExtensionManager|Extension Manager" # Extension Manager
+    "it.mijorus.gearlever|Gear Lever" # Gear Lever
+    "be.alexandervanhee.gradia|Gradia" # Gradia
+    "org.keepassxc.KeePassXC|KeePassXC" # KeePassXC
+    "org.localsend.localsend_app|LocalSend" # LocalSend
+    "io.missioncenter.MissionCenter|Mission Center" # Mission Center
+    "io.github.subhra74.Muon|Muon" # Muon
+    "io.github.alainm23.planify|Planify" # Planify
+    "com.getpostman.Postman|Postman" # Postman
+    "io.github.smolblackcat.Progress|Progress" # Progress
+    "com.spotify.Client|Spotify" # Spotify
+    "best.ellie.StartupConfiguration|Startup Configuration" # Startup Configuration
+    "io.gitlab.adhami3310.Converter|Converter" # Converter
+    "org.telegram.desktop|Telegram" # Telegram
+    "io.github.flattool.Warehouse|Warehouse" # Warehouse
+    "com.rtosta.zapzap|ZapZap" # ZapZap
 )
 
 # ============================================
@@ -262,6 +271,25 @@ instalar_flatpaks() {
 }
 
 # ============================================
+# TAILSCALE
+# ============================================
+
+instalar_tailscale() {
+    titulo "Instalando Tailscale"
+    if comando_existe tailscale; then
+        aviso "Tailscale já está instalado."
+        return
+    fi
+
+    info "Baixando e instalando o Tailscale..."
+    if curl -fsSL https://tailscale.com/install.sh | sh >> "$LOG_FILE" 2>&1; then
+        info "Tailscale instalado com sucesso."
+    else
+        registrar_erro "Falha ao instalar o Tailscale."
+    fi
+}
+
+# ============================================
 # ZED EDITOR
 # ============================================
 
@@ -343,6 +371,7 @@ main() {
     instalar_apt
     instalar_flatpaks
     instalar_snaps
+    instalar_tailscale
     instalar_zed
     limpeza_final
     exibir_resumo
