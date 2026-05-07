@@ -75,9 +75,12 @@
   "indent_guides": {
     "enabled": false,
   },
-  "ui_font_family": ".ZedMono",
+  "ui_font_family": "Fira Code",
   "ui_font_size": 15,
-  "buffer_font_family": ".ZedMono",
+  "buffer_font_family": "Fira Code",
+  "buffer_font_features": {
+    "calt": true,
+  },
   "buffer_font_size": 15,
   "buffer_line_height": {
     "custom": 1.5,
