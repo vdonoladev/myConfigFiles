@@ -62,14 +62,14 @@ DEB_URLS=(
 # ============================================
 
 PROGRAMS_APT=(
-    wget # wget
-    flatpak # flatpak
-    snapd # snapd
-    curl # curl
-    ubuntu-restricted-extras # ubuntu-restricted-extras
-    fastfetch # fastfetch
     code # code
+    curl # curl
+    fastfetch # fastfetch
+    flatpak # flatpak
     git # git
+    snapd # snapd
+    ubuntu-restricted-extras # ubuntu-restricted-extras
+    wget # wget
 )
 
 # ============================================
@@ -87,7 +87,9 @@ PROGRAMS_SNAP=(
 PROGRAMS_FLATPAK=(
     "io.github.kolunmi.Bazaar|Bazaar" # Bazaar
     "com.bitwarden.desktop|Bitwarden" # Bitwarden
+    "com.rafaelmardojai.Blanket" # Blanket
     "io.github.shonebinu.Brief|Brief" # Brief
+    "io.gitlab.adhami3310.Converter|Converter" # Converter
     "com.discordapp.Discord|Discord" # Discord
     "com.mattjakeman.ExtensionManager|Extension Manager" # Extension Manager
     "it.mijorus.gearlever|Gear Lever" # Gear Lever
@@ -101,8 +103,8 @@ PROGRAMS_FLATPAK=(
     "io.github.smolblackcat.Progress|Progress" # Progress
     "com.spotify.Client|Spotify" # Spotify
     "best.ellie.StartupConfiguration|Startup Configuration" # Startup Configuration
-    "io.gitlab.adhami3310.Converter|Converter" # Converter
     "org.telegram.desktop|Telegram" # Telegram
+    "io.github.lluciocc.Vish" # Vish
     "io.github.flattool.Warehouse|Warehouse" # Warehouse
     "com.rtosta.zapzap|ZapZap" # ZapZap
 )
