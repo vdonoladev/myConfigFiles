@@ -6,7 +6,7 @@ Script de pós-instalação para sistemas baseados em Debian/Ubuntu. Automatiza 
 
 ## Requisitos
 
-- Sistema baseado em Debian/Ubuntu (Pop!_OS, Linux Mint, etc.)
+- Sistema baseado em Debian/Ubuntu (Pop!\_OS, Linux Mint, etc.)
 - Conexão com a internet
 - Usuário com permissões `sudo`
 
@@ -44,65 +44,62 @@ chmod +x afterInstall.sh
 
 ### Pacotes `.deb` (download direto)
 
-| Aplicativo | Descrição |
-| --- | --- |
-| 1Password | Gerenciador de senhas |
-| DBeaver CE | Cliente universal de banco de dados |
-| Ente Auth | Autenticador 2FA de código aberto |
-| Little Snitch | Monitoramento de rede |
-| OnlyOffice Desktop | Suite de escritório |
-| Upscayl | Upscaling de imagens com IA |
-| VeraCrypt | Criptografia de disco |
+| Aplicativo         | Descrição                           |
+| ------------------ | ----------------------------------- |
+| DBeaver CE         | Cliente universal de banco de dados |
+| Ente Auth          | Autenticador 2FA de código aberto   |
+| Little Snitch      | Monitoramento de rede               |
+| OnlyOffice Desktop | Suite de escritório                 |
+| VeraCrypt          | Criptografia de disco               |
 
 ### APT
 
-| Pacote | Descrição |
-| --- | --- |
-| `wget` | Download de arquivos via terminal |
-| `curl` | Transferência de dados via URL |
-| `git` | Controle de versão |
-| `flatpak` | Gerenciador de pacotes Flatpak |
-| `snapd` | Gerenciador de pacotes Snap |
+| Pacote                     | Descrição                                |
+| -------------------------- | ---------------------------------------- |
+| `wget`                     | Download de arquivos via terminal        |
+| `curl`                     | Transferência de dados via URL           |
+| `git`                      | Controle de versão                       |
+| `flatpak`                  | Gerenciador de pacotes Flatpak           |
+| `snapd`                    | Gerenciador de pacotes Snap              |
 | `ubuntu-restricted-extras` | Codecs multimídia e fontes proprietárias |
-| `fastfetch` | Exibição de informações do sistema |
-| `code` | Visual Studio Code |
+| `fastfetch`                | Exibição de informações do sistema       |
+| `code`                     | Visual Studio Code                       |
 
 ### Flatpak
 
-| Aplicativo | Descrição |
-| --- | --- |
-| Bazaar | Loja de apps alternativa |
-| Bitwarden | Gerenciador de senhas |
-| Brief | Leitor de RSS |
-| Discord | Comunicação por voz, vídeo e texto |
-| Extension Manager | Gerenciador de extensões do GNOME |
-| Gear Lever | Gerenciador de AppImages |
-| Gradia | Editor de capturas de tela |
-| KeePassXC | Gerenciador de senhas offline |
-| LocalSend | Transferência de arquivos na rede local |
-| Mission Center | Monitor do sistema |
-| Muon | Cliente SSH e SFTP |
-| Planify | Gerenciador de tarefas |
-| Postman | Plataforma para testes de API |
-| Progress | Rastreador de progresso pessoal |
-| Spotify | Streaming de música |
-| Startup Configuration | Gerencia apps de inicialização |
-| Converter | Conversor de unidades e arquivos |
-| Telegram | Mensageiro |
-| Warehouse | Gerenciador visual de apps Flatpak |
-| ZapZap | Cliente desktop do WhatsApp |
+| Aplicativo            | Descrição                               |
+| --------------------- | --------------------------------------- |
+| Bazaar                | Loja de apps alternativa                |
+| Bitwarden             | Gerenciador de senhas                   |
+| Brief                 | Leitor de RSS                           |
+| Discord               | Comunicação por voz, vídeo e texto      |
+| Extension Manager     | Gerenciador de extensões do GNOME       |
+| Gear Lever            | Gerenciador de AppImages                |
+| Gradia                | Editor de capturas de tela              |
+| LocalSend             | Transferência de arquivos na rede local |
+| Mission Center        | Monitor do sistema                      |
+| Muon                  | Cliente SSH e SFTP                      |
+| Planify               | Gerenciador de tarefas                  |
+| Postman               | Plataforma para testes de API           |
+| Progress              | Rastreador de progresso pessoal         |
+| Spotify               | Streaming de música                     |
+| Startup Configuration | Gerencia apps de inicialização          |
+| Converter             | Conversor de unidades e arquivos        |
+| Telegram              | Mensageiro                              |
+| Warehouse             | Gerenciador visual de apps Flatpak      |
+| ZapZap                | Cliente desktop do WhatsApp             |
 
 ### Snap
 
-| Aplicativo | Descrição |
-| --- | --- |
-| VLC | Player de mídia universal |
+| Aplicativo | Descrição                 |
+| ---------- | ------------------------- |
+| VLC        | Player de mídia universal |
 
 ### Scripts oficiais
 
-| Aplicativo | Descrição |
-| --- | --- |
-| Tailscale | VPN mesh baseada em WireGuard |
+| Aplicativo | Descrição                         |
+| ---------- | --------------------------------- |
+| Tailscale  | VPN mesh baseada em WireGuard     |
 | Zed Editor | Editor de código rápido e moderno |
 
 ---

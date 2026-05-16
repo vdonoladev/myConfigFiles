@@ -36,24 +36,18 @@ ERROS=()
 # URLS DE PACOTES .DEB EXTERNOS
 # ============================================
 
-URL_1PASSWORD="https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb"
 URL_DBEAVER="https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb"
 URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
 URL_LITTLESNITCH="https://obdev.at/downloads/littlesnitch-linux/littlesnitch_1.0.7_amd64.deb"
-URL_OBSIDIAN="https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/obsidian_1.12.7_amd64.deb"
 URL_ONLYOFFICE="https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb"
-URL_UPSCAYL="https://github.com/upscayl/upscayl/releases/download/v2.15.0/upscayl-2.15.0-linux.deb"
 URL_VERACRYPT="https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb"
 
 # Coloque as URLs acima neste array para que sejam baixadas automaticamente:
 DEB_URLS=(
-    "$URL_1PASSWORD"
     "$URL_DBEAVER"
     "$URL_ENTE_AUTH"
     "$URL_LITTLESNITCH"
-    "$URL_OBSIDIAN"
     "$URL_ONLYOFFICE"
-    "$URL_UPSCAYL"
     "$URL_VERACRYPT"
 )
 
@@ -94,7 +88,6 @@ PROGRAMS_FLATPAK=(
     "com.mattjakeman.ExtensionManager|Extension Manager" # Extension Manager
     "it.mijorus.gearlever|Gear Lever" # Gear Lever
     "be.alexandervanhee.gradia|Gradia" # Gradia
-    "org.keepassxc.KeePassXC|KeePassXC" # KeePassXC
     "org.localsend.localsend_app|LocalSend" # LocalSend
     "io.missioncenter.MissionCenter|Mission Center" # Mission Center
     "io.github.subhra74.Muon|Muon" # Muon
