@@ -39,6 +39,7 @@ ERROS=()
 URL_DBEAVER="https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb"
 URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
 URL_LITTLESNITCH="https://obdev.at/downloads/littlesnitch-linux/littlesnitch_1.0.7_amd64.deb"
+URL_PORTMASTER="https://updates.safing.io/latest/linux_amd64/packages/Portmaster_2.1.18_amd64.deb"
 URL_ONLYOFFICE="https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb"
 URL_VERACRYPT="https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb"
 
@@ -47,6 +48,7 @@ DEB_URLS=(
     "$URL_DBEAVER"
     "$URL_ENTE_AUTH"
     "$URL_LITTLESNITCH"
+    "$URL_PORTMASTER"
     "$URL_ONLYOFFICE"
     "$URL_VERACRYPT"
 )
