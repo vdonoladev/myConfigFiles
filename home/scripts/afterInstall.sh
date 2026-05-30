@@ -82,7 +82,6 @@ PROGRAMS_SNAP=(
 
 PROGRAMS_FLATPAK=(
     "io.github.kolunmi.Bazaar|Bazaar" # Bazaar
-    "com.bitwarden.desktop|Bitwarden" # Bitwarden
     "com.rafaelmardojai.Blanket" # Blanket
     "io.github.shonebinu.Brief|Brief" # Brief
     "io.gitlab.adhami3310.Converter|Converter" # Converter
@@ -96,7 +95,6 @@ PROGRAMS_FLATPAK=(
     "io.github.alainm23.planify|Planify" # Planify
     "com.getpostman.Postman|Postman" # Postman
     "io.github.smolblackcat.Progress|Progress" # Progress
-    "com.spotify.Client|Spotify" # Spotify
     "best.ellie.StartupConfiguration|Startup Configuration" # Startup Configuration
     "org.telegram.desktop|Telegram" # Telegram
     "io.github.lluciocc.Vish" # Vish
