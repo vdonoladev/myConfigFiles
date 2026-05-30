@@ -109,8 +109,8 @@
   "format_on_save": "on",
   /* "autosave": {
     "after_delay": {
-      "milliseconds": 1000,
-    },
+      "milliseconds": 1000
+    }
   }, */
   "auto_update": false,
   "extend_comment_on_newline": false,
@@ -127,7 +127,7 @@
   "git": {
     "git_gutter": "hide",
     /* "inline_blame": {
-      "enabled": false,
+      "enabled": false
     } */
   },
   "centered_layout": {
