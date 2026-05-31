@@ -38,18 +38,12 @@ ERROS=()
 
 URL_DBEAVER="https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb"
 URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
-URL_LITTLESNITCH="https://obdev.at/downloads/littlesnitch-linux/littlesnitch_1.0.7_amd64.deb"
-URL_PORTMASTER="https://updates.safing.io/latest/linux_amd64/packages/Portmaster_2.1.18_amd64.deb"
-URL_ONLYOFFICE="https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb"
 URL_VERACRYPT="https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb"
 
 # Coloque as URLs acima neste array para que sejam baixadas automaticamente:
 DEB_URLS=(
     "$URL_DBEAVER"
     "$URL_ENTE_AUTH"
-    "$URL_LITTLESNITCH"
-    "$URL_PORTMASTER"
-    "$URL_ONLYOFFICE"
     "$URL_VERACRYPT"
 )
 
@@ -82,22 +76,17 @@ PROGRAMS_SNAP=(
 
 PROGRAMS_FLATPAK=(
     "io.github.kolunmi.Bazaar|Bazaar" # Bazaar
-    "com.rafaelmardojai.Blanket" # Blanket
     "io.github.shonebinu.Brief|Brief" # Brief
-    "io.gitlab.adhami3310.Converter|Converter" # Converter
+    "io.gitlab.adhami3310.Converter|Converter" # Switcheroo
     "com.discordapp.Discord|Discord" # Discord
     "com.mattjakeman.ExtensionManager|Extension Manager" # Extension Manager
     "it.mijorus.gearlever|Gear Lever" # Gear Lever
     "be.alexandervanhee.gradia|Gradia" # Gradia
     "org.localsend.localsend_app|LocalSend" # LocalSend
     "io.missioncenter.MissionCenter|Mission Center" # Mission Center
-    "io.github.subhra74.Muon|Muon" # Muon
-    "io.github.alainm23.planify|Planify" # Planify
     "com.getpostman.Postman|Postman" # Postman
-    "io.github.smolblackcat.Progress|Progress" # Progress
     "best.ellie.StartupConfiguration|Startup Configuration" # Startup Configuration
     "org.telegram.desktop|Telegram" # Telegram
-    "io.github.lluciocc.Vish" # Vish
     "io.github.flattool.Warehouse|Warehouse" # Warehouse
     "com.rtosta.zapzap|ZapZap" # ZapZap
 )
