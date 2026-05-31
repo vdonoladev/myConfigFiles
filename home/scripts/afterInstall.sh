@@ -39,12 +39,14 @@ ERROS=()
 URL_DBEAVER="https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb"
 URL_ENTE_AUTH="https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb"
 URL_VERACRYPT="https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb"
+URL_VSCODE="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
 
 # Coloque as URLs acima neste array para que sejam baixadas automaticamente:
 DEB_URLS=(
     "$URL_DBEAVER"
     "$URL_ENTE_AUTH"
     "$URL_VERACRYPT"
+    "$URL_VSCODE"
 )
 
 # ============================================
@@ -52,7 +54,6 @@ DEB_URLS=(
 # ============================================
 
 PROGRAMS_APT=(
-    code # code
     curl # curl
     fastfetch # fastfetch
     flatpak # flatpak
