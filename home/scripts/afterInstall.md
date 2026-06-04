@@ -81,6 +81,7 @@ chmod +x afterInstall.sh
 | ------------------- | ----------------------------------- |
 | DBeaver CE          | Cliente universal de banco de dados |
 | Ente Auth           | Autenticador 2FA de código aberto   |
+| OnlyOffice          | Suíte Office                        |
 | VeraCrypt           | Criptografia de disco               |
 | Visual Studio Code  | Editor de código da Microsoft       |
 
