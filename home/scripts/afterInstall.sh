@@ -123,6 +123,7 @@ PROGRAMS_FLATPAK=(
     "com.mattjakeman.ExtensionManager|Extension Manager"
     "it.mijorus.gearlever|Gear Lever"
     "be.alexandervanhee.gradia|Gradia"
+    "org.inkscape.Inkscape|Inkscape"
     "org.localsend.localsend_app|LocalSend"
     "io.missioncenter.MissionCenter|Mission Center"
     "com.getpostman.Postman|Postman"
