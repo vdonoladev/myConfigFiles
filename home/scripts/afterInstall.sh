@@ -80,7 +80,6 @@ DEB_PACKAGES=(
     "dbeaver-ce.deb|https://dbeaver.io/files/dbeaver-ce-latest-linux-x86_64.deb|DBeaver CE"
     "ente-auth.deb|https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb|Ente Auth"
     "onlyoffice.deb|https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb|OnlyOffice"
-    "steam.deb|https://cdn.akamai.steamstatic.com/client/installer/steam.deb|Steam"
     "veracrypt.deb|https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb|VeraCrypt"
     "vscode.deb|https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64|Visual Studio Code"
 )
@@ -92,7 +91,6 @@ DEB_PACKAGES=(
 
 PROGRAMS_APT=(
     "curl|cURL"
-    "fastfetch|Fastfetch"
     "flatpak|Flatpak"
     "git|Git"
     "snapd|Snapd"
@@ -116,10 +114,8 @@ PROGRAMS_SNAP=(
 # ============================================================
 
 PROGRAMS_FLATPAK=(
-    "io.github.kolunmi.Bazaar|Bazaar"
     "io.github.shonebinu.Brief|Brief"
     "io.gitlab.adhami3310.Converter|Switcheroo Converter"
-    "com.discordapp.Discord|Discord"
     "com.mattjakeman.ExtensionManager|Extension Manager"
     "it.mijorus.gearlever|Gear Lever"
     "be.alexandervanhee.gradia|Gradia"
@@ -128,9 +124,7 @@ PROGRAMS_FLATPAK=(
     "io.missioncenter.MissionCenter|Mission Center"
     "com.getpostman.Postman|Postman"
     "best.ellie.StartupConfiguration|Startup Configuration"
-    "org.telegram.desktop|Telegram"
     "io.github.flattool.Warehouse|Warehouse"
-    "com.rtosta.zapzap|ZapZap"
 )
 
 # ============================================================
