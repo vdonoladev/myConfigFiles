@@ -4,7 +4,7 @@
 # SCRIPT DE PÓS-INSTALAÇÃO PARA LINUX
 # ============================================================
 # Autor     : vdonoladev
-# Versão    : 2.0.0
+# Versão    : 2.2.0
 # Descrição : Instala e configura programas essenciais após
 #             uma instalação limpa do sistema Linux.
 #
@@ -19,7 +19,8 @@
 #   --skip-flatpak     Ignora instalações via Flatpak
 #   --skip-snap        Ignora instalações via Snap
 #   --skip-debs        Ignora pacotes .deb externos
-#   --skip-extras      Ignora extras (Tailscale, Zed, NVM)
+#   --skip-extras      Ignora extras (Tailscale, Zed, NVM, Toolbox, VS Code)
+#   --skip-dotfiles    Ignora download e configuração de dotfiles
 # ============================================================
 
 set -euo pipefail
@@ -41,7 +42,7 @@ readonly BRANCO="\e[1;97m"
 # CONFIGURAÇÃO DO SCRIPT
 # ============================================================
 
-readonly SCRIPT_VERSION="2.0.0"
+readonly SCRIPT_VERSION="2.2.0"
 readonly SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 readonly START_TIME="$(date +%s)"
 readonly LOG_DIR="$HOME/.logs/afterinstall"
@@ -49,8 +50,17 @@ readonly LOG_FILE="${LOG_DIR}/afterInstall_$(date +%Y%m%d_%H%M%S).log"
 readonly DIRECTORY_DOWNLOADS="$HOME/Programs"
 readonly LOCK_FILE="/tmp/afterInstall_$(id -u).lock"
 
-# Versão do NVM — verifique a mais recente em https://github.com/nvm-sh/nvm
+# Configuração do repositório de Dotfiles no GitHub
+readonly GITHUB_USER="vdonoladev"
+readonly GITHUB_REPO="myConfigFiles"
+readonly GITHUB_BRANCH="main"
+readonly GITHUB_RAW_BASE="https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/home"
+
+# Versão do NVM
 readonly NVM_VERSION="v0.40.3"
+
+# Diretório de instalação do JetBrains Toolbox
+readonly JETBRAINS_INSTALL_DIR="/opt/jetbrains-toolbox"
 
 # Flags de execução (modificadas por parse_args)
 DRY_RUN=false
@@ -59,6 +69,7 @@ SKIP_FLATPAK=false
 SKIP_SNAP=false
 SKIP_DEBS=false
 SKIP_EXTRAS=false
+SKIP_DOTFILES=false
 
 # Contadores
 COUNT_INSTALLED=0
@@ -72,6 +83,17 @@ ERROS=()
 SUDO_KEEPALIVE_PID=""
 
 # ============================================================
+# DOTFILES DO GITHUB
+# Formato: "nome_do_arquivo_no_repo|destino_local"
+# ============================================================
+
+DOTFILES=(
+    ".gitconfig|$HOME/.gitconfig"
+    ".bash_aliases|$HOME/.bash_aliases"
+    ".bashrc|$HOME/.bashrc"
+)
+
+# ============================================================
 # PACOTES .DEB EXTERNOS
 # Formato: "nome_arquivo.deb|URL_DE_DOWNLOAD|Nome Exibido"
 # ============================================================
@@ -81,7 +103,6 @@ DEB_PACKAGES=(
     "ente-auth.deb|https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb|Ente Auth"
     "onlyoffice.deb|https://github.com/ONLYOFFICE/DesktopEditors/releases/latest/download/onlyoffice-desktopeditors_amd64.deb|OnlyOffice"
     "veracrypt.deb|https://github.com/veracrypt/VeraCrypt/releases/download/VeraCrypt_1.26.24/veracrypt-1.26.24-Debian-11-amd64.deb|VeraCrypt"
-    "vscode.deb|https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64|Visual Studio Code"
 )
 
 # ============================================================
@@ -91,17 +112,29 @@ DEB_PACKAGES=(
 
 PROGRAMS_APT=(
     "curl|cURL"
-    "flatpak|Flatpak"
+    "wget|Wget"
     "git|Git"
+    "jq|Jq (Processador JSON)"
+    "build-essential|Build Essential"
+    "flatpak|Flatpak"
+    "gnome-software-plugin-flatpak|Plugin Flatpak GNOME"
+    "gnome-tweaks|GNOME Tweaks"
+    "gnome-shell-extension-manager|Extension Manager"
     "snapd|Snapd"
     "ubuntu-restricted-extras|Ubuntu Restricted Extras"
-    "wget|Wget"
+    "htop|Htop"
+    "fastfetch|Fastfetch"
+    "7zip|7-Zip"
+    "unrar|UnRAR"
+    "zoxide|Zoxide"
+    "fzf|FZF"
+    "tlp|TLP Power Management"
+    "tlp-rdw|TLP Radio Device Wizard"
 )
 
 # ============================================================
 # PROGRAMAS SNAP
 # Formato: "id|Nome Exibido" ou "id|Nome Exibido|--flag1 --flag2"
-# Exemplo com flag: "code|VS Code|--classic"
 # ============================================================
 
 PROGRAMS_SNAP=(
@@ -116,7 +149,6 @@ PROGRAMS_SNAP=(
 PROGRAMS_FLATPAK=(
     "io.github.shonebinu.Brief|Brief"
     "io.gitlab.adhami3310.Converter|Switcheroo Converter"
-    "com.mattjakeman.ExtensionManager|Extension Manager"
     "it.mijorus.gearlever|Gear Lever"
     "be.alexandervanhee.gradia|Gradia"
     "org.inkscape.Inkscape|Inkscape"
@@ -131,7 +163,6 @@ PROGRAMS_FLATPAK=(
 # FUNÇÕES DE LOG
 # ============================================================
 
-# Exibe no terminal (com cores) e grava no arquivo (sem cores)
 _log() {
     local msg="$1"
     echo -e "$msg"
@@ -163,7 +194,6 @@ pacote_apt_instalado() {
     dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "install ok installed"
 }
 
-# Tenta baixar um arquivo com até N tentativas
 baixar_com_retry() {
     local url="$1"
     local destino="$2"
@@ -184,7 +214,6 @@ baixar_com_retry() {
     return 1
 }
 
-# Mantém o token sudo renovado em background durante toda a execução
 manter_sudo_ativo() {
     while true; do
         sudo -n true 2>/dev/null
@@ -213,7 +242,8 @@ ${NEGRITO}OPÇÕES:${RESET}
   --skip-flatpak     Ignora instalações via Flatpak
   --skip-snap        Ignora instalações via Snap
   --skip-debs        Ignora pacotes .deb externos
-  --skip-extras      Ignora extras (Tailscale, Zed, NVM)
+  --skip-extras      Ignora extras (Tailscale, Zed, NVM, Toolbox, VS Code)
+  --skip-dotfiles    Ignora download e configuração de dotfiles
 
 ${NEGRITO}EXEMPLOS:${RESET}
   ./${SCRIPT_NAME}                             # Execução completa
@@ -234,6 +264,7 @@ parse_args() {
             --skip-snap)     SKIP_SNAP=true ;;
             --skip-debs)     SKIP_DEBS=true ;;
             --skip-extras)   SKIP_EXTRAS=true ;;
+            --skip-dotfiles) SKIP_DOTFILES=true ;;
             *)
                 echo -e "${VERMELHO}  ✗  Opção inválida: '$1'${RESET}" >&2
                 echo "     Use --help para ver as opções disponíveis." >&2
@@ -289,15 +320,6 @@ detectar_sistema() {
         log_erro "Este script requer um sistema baseado em Debian/Ubuntu (apt não encontrado)."
         exit 1
     fi
-
-    case "${ID:-}" in
-        ubuntu|debian|linuxmint|pop|elementary|zorin|kali|neon) ;;
-        *)
-            if [[ "${ID_LIKE:-}" != *"ubuntu"* && "${ID_LIKE:-}" != *"debian"* ]]; then
-                log_warn "Distribuição '${ID:-desconhecida}' pode não ser totalmente suportada."
-            fi
-            ;;
-    esac
 }
 
 verificar_espaco_disco() {
@@ -349,15 +371,16 @@ verificar_sudo() {
 confirmacao_inicio() {
     echo ""
     _log "${NEGRITO}  Etapas que serão executadas:${RESET}"
-    [[ "$SKIP_APT" == "false" ]]     && _log "    ${VERDE}•${RESET} APT             → ${#PROGRAMS_APT[@]} pacotes"
-    [[ "$SKIP_DEBS" == "false" ]]    && _log "    ${VERDE}•${RESET} .deb externos   → ${#DEB_PACKAGES[@]} pacotes"
-    [[ "$SKIP_SNAP" == "false" ]]    && _log "    ${VERDE}•${RESET} Snap            → ${#PROGRAMS_SNAP[@]} aplicativos"
-    [[ "$SKIP_FLATPAK" == "false" ]] && _log "    ${VERDE}•${RESET} Flatpak         → ${#PROGRAMS_FLATPAK[@]} aplicativos"
-    [[ "$SKIP_EXTRAS" == "false" ]]  && _log "    ${VERDE}•${RESET} Extras          → Tailscale, Zed Editor, NVM ${NVM_VERSION}"
+    [[ "$SKIP_APT" == "false" ]]      && _log "    ${VERDE}•${RESET} APT             → ${#PROGRAMS_APT[@]} pacotes"
+    [[ "$SKIP_DEBS" == "false" ]]     && _log "    ${VERDE}•${RESET} .deb externos   → ${#DEB_PACKAGES[@]} pacotes"
+    [[ "$SKIP_SNAP" == "false" ]]     && _log "    ${VERDE}•${RESET} Snap            → ${#PROGRAMS_SNAP[@]} aplicativos"
+    [[ "$SKIP_FLATPAK" == "false" ]]  && _log "    ${VERDE}•${RESET} Flatpak         → ${#PROGRAMS_FLATPAK[@]} aplicativos"
+    [[ "$SKIP_EXTRAS" == "false" ]]   && _log "    ${VERDE}•${RESET} Extras          → VS Code, JetBrains Toolbox, Tailscale, Zed, NVM ${NVM_VERSION}"
+    [[ "$SKIP_DOTFILES" == "false" ]] && _log "    ${VERDE}•${RESET} Dotfiles        → .gitconfig, .bash_aliases, .bashrc (${GITHUB_REPO}/home)"
 
     if [[ "$DRY_RUN" == "true" ]]; then
         echo ""
-        _log "  ${MAGENTA}${NEGRITO}  ★ MODO DRY-RUN ATIVO — nenhum pacote será instalado${RESET}"
+        _log "  ${MAGENTA}${NEGRITO}  ★ MODO DRY-RUN ATIVO — nenhuma alteração será feita${RESET}"
     fi
 
     echo ""
@@ -382,7 +405,7 @@ cleanup() {
     rm -f "$LOCK_FILE"
 
     case "$code" in
-        0)   ;; # Sucesso — resumo já foi exibido por exibir_resumo
+        0)   ;; 
         130) echo -e "\n${AMARELO}  Interrompido pelo usuário (Ctrl+C).${RESET}" ;;
         143) echo -e "\n${VERMELHO}  Script terminado por sinal externo (SIGTERM).${RESET}" ;;
         *)
@@ -397,7 +420,7 @@ trap 'exit 130' INT
 trap 'exit 143' TERM
 
 # ============================================================
-# APT
+# AJUSTES DE SISTEMA & REPOSITÓRIOS
 # ============================================================
 
 remover_locks_apt() {
@@ -407,6 +430,28 @@ remover_locks_apt() {
         /var/lib/dpkg/lock-frontend \
         /var/cache/apt/archives/lock
     sudo dpkg --configure -a >> "$LOG_FILE" 2>&1 || true
+}
+
+configurar_locales() {
+    log_passo "Configurando e gerando Locales (pt_BR e en_US)"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "sudo locale-gen pt_BR.UTF-8 en_US.UTF-8 && sudo update-locale"
+        return
+    fi
+    sudo locale-gen pt_BR.UTF-8 en_US.UTF-8 >> "$LOG_FILE" 2>&1 || true
+    sudo update-locale LANG=pt_BR.UTF-8 >> "$LOG_FILE" 2>&1 || true
+    log_info "Locales gerados com sucesso."
+}
+
+configurar_apparmor_electron() {
+    log_passo "Configurando AppArmor para suporte a Electron/Sandboxing"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Definir kernel.apparmor_restrict_unprivileged_userns=0"
+        return
+    fi
+    echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf >> "$LOG_FILE" 2>&1 || true
+    sudo sysctl --system >> "$LOG_FILE" 2>&1 || true
+    log_info "AppArmor ajustado com sucesso."
 }
 
 atualizar_sistema() {
@@ -446,12 +491,51 @@ instalar_apt() {
             log_dry "apt install $pacote  [$nome]"
         else
             log_sub "Instalando: $nome..."
-            if sudo apt install "$pacote" -y >> "$LOG_FILE" 2>&1; then
+            if sudo DEBIAN_FRONTEND=noninteractive apt install "$pacote" -y >> "$LOG_FILE" 2>&1; then
                 log_info "Instalado: $nome"
                 COUNT_INSTALLED=$(( COUNT_INSTALLED + 1 ))
             else
                 registrar_erro "Falha via APT: $nome ($pacote)"
             fi
+        fi
+    done
+}
+
+# ============================================================
+# DOTFILES (GITHUB)
+# ============================================================
+
+sincronizar_dotfiles() {
+    [[ "$SKIP_DOTFILES" == "true" ]] && { log_warn "Dotfiles ignorados (--skip-dotfiles)."; return; }
+    log_passo "Sincronizando Dotfiles do repositório ${GITHUB_REPO}/home"
+
+    local arquivo destino url backup_arquivo
+    local timestamp
+    timestamp="$(date +%Y%m%d_%H%M%S)"
+
+    for item in "${DOTFILES[@]}"; do
+        IFS='|' read -r arquivo destino <<< "$item" || true
+        url="${GITHUB_RAW_BASE}/${arquivo}"
+
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_dry "Download $url → $destino"
+            continue
+        fi
+
+        log_sub "Configurando: $arquivo..."
+
+        if [[ -f "$destino" ]]; then
+            backup_arquivo="${destino}.bak_${timestamp}"
+            cp "$destino" "$backup_arquivo"
+            log_warn "Backup gerado: $backup_arquivo"
+        fi
+
+        if curl -fsSL "$url" -o "$destino" >> "$LOG_FILE" 2>&1; then
+            chmod 644 "$destino"
+            log_info "Aplicado: $arquivo → $destino"
+            COUNT_INSTALLED=$(( COUNT_INSTALLED + 1 ))
+        else
+            registrar_erro "Falha ao baixar $arquivo de $url"
         fi
     done
 }
@@ -493,7 +577,7 @@ instalar_debs() {
             log_info "Todos os .deb instalados com sucesso."
             COUNT_INSTALLED=$(( COUNT_INSTALLED + ${#debs_baixados[@]} ))
         else
-            log_warn "Alguns .deb falharam. Corrigindo dependências..."
+            log_warn "Dependências pendentes nos .deb. Corrigindo via apt..."
             sudo apt --fix-broken install -y >> "$LOG_FILE" 2>&1 || true
         fi
     fi
@@ -536,7 +620,6 @@ instalar_snaps() {
         return
     fi
 
-    # Formato: "id|Nome Exibido" ou "id|Nome Exibido|--flags"
     local id nome flags
     for entrada in "${PROGRAMS_SNAP[@]}"; do
         IFS='|' read -r id nome flags <<< "$entrada" || true
@@ -599,8 +682,111 @@ instalar_flatpaks() {
 }
 
 # ============================================================
-# TAILSCALE
+# EXTRAS (VS CODE, JETBRAINS TOOLBOX, TAILSCALE, ZED, NVM)
 # ============================================================
+
+instalar_vscode_oficial() {
+    [[ "$SKIP_EXTRAS" == "true" ]] && return
+    log_passo "Configurando repositório oficial do Visual Studio Code"
+
+    if comando_existe code; then
+        log_warn "VS Code já instalado."
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Adicionar repositório oficial Microsoft e instalar pacote code via apt"
+        return
+    fi
+
+    log_sub "Importando chave e repositório da Microsoft..."
+    if wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo install -D -o root -g root -m 644 /dev/stdin /etc/apt/keyrings/packages.microsoft.gpg >> "$LOG_FILE" 2>&1; then
+        echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+        sudo apt update -y >> "$LOG_FILE" 2>&1
+        if sudo apt install code -y >> "$LOG_FILE" 2>&1; then
+            log_info "VS Code instalado via repositório oficial."
+            COUNT_INSTALLED=$(( COUNT_INSTALLED + 1 ))
+        else
+            registrar_erro "Falha ao instalar o pacote 'code'."
+        fi
+    else
+        registrar_erro "Falha ao importar chave GPG do VS Code."
+    fi
+}
+
+instalar_jetbrains_toolbox() {
+    [[ "$SKIP_EXTRAS" == "true" ]] && return
+    log_passo "Instalando JetBrains Toolbox"
+
+    if [[ -x "${JETBRAINS_INSTALL_DIR}/jetbrains-toolbox" ]] || comando_existe jetbrains-toolbox; then
+        log_warn "JetBrains Toolbox já instalado."
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_dry "Download do JetBrains Toolbox oficial, extrair para ${JETBRAINS_INSTALL_DIR} e criar link simbólico"
+        return
+    fi
+
+    # Garante suporte a libfuse para AppImages / binários integrados
+    if ! ldconfig -p 2>/dev/null | grep -Eq 'libfuse\.so\.2|libfuse2'; then
+        log_sub "Instalando dependência libfuse2..."
+        sudo apt install -y libfuse2t64 >> "$LOG_FILE" 2>&1 || sudo apt install -y libfuse2 >> "$LOG_FILE" 2>&1 || true
+    fi
+
+    log_sub "Consultando URL da versão mais recente na API da JetBrains..."
+    local api_url="https://data.services.jetbrains.com/products/releases?code=TBA&type=release"
+    local download_url=""
+
+    if comando_existe jq; then
+        download_url=$(curl -fsSL "$api_url" 2>/dev/null | jq -r '.TBA[0].downloads.linux.link // empty')
+    fi
+
+    if [[ -z "$download_url" ]]; then
+        download_url=$(curl -fsSL "$api_url" 2>/dev/null | grep -oP '"linux":\{"link":"\Khttps://[^"]+\.tar\.gz' | head -1 || true)
+    fi
+
+    if [[ -z "$download_url" ]]; then
+        registrar_erro "Não foi possível obter o link de download do JetBrains Toolbox."
+        return
+    fi
+
+    local tarball_path="${DIRECTORY_DOWNLOADS}/jetbrains-toolbox.tar.gz"
+    log_sub "Baixando JetBrains Toolbox..."
+    if ! baixar_com_retry "$download_url" "$tarball_path" "JetBrains Toolbox"; then
+        registrar_erro "Falha no download do JetBrains Toolbox."
+        return
+    fi
+
+    log_sub "Extraindo e configurando..."
+    local tmp_dir
+    tmp_dir=$(mktemp -d /tmp/jb-toolbox-XXXXXX)
+
+    if tar -xzf "$tarball_path" -C "$tmp_dir" >> "$LOG_FILE" 2>&1; then
+        local binary
+        binary=$(find "$tmp_dir" -type f -name "jetbrains-toolbox" | head -1)
+
+        if [[ -n "$binary" ]]; then
+            sudo mkdir -p "$JETBRAINS_INSTALL_DIR"
+            sudo cp -r "$(dirname "$binary")"/. "$JETBRAINS_INSTALL_DIR/"
+            sudo chmod +x "${JETBRAINS_INSTALL_DIR}/jetbrains-toolbox"
+            sudo ln -sf "${JETBRAINS_INSTALL_DIR}/jetbrains-toolbox" /usr/local/bin/jetbrains-toolbox
+
+            # Inicializa em background para criar automaticamente os ficheiros desktop e pastas do utilizador
+            nohup "${JETBRAINS_INSTALL_DIR}/jetbrains-toolbox" &>/dev/null &
+            sleep 2
+
+            log_info "JetBrains Toolbox instalado com sucesso."
+            COUNT_INSTALLED=$(( COUNT_INSTALLED + 1 ))
+        else
+            registrar_erro "Binário 'jetbrains-toolbox' não encontrado dentro do pacote extraído."
+        fi
+    else
+        registrar_erro "Falha ao descompactar JetBrains Toolbox."
+    fi
+
+    rm -rf "$tmp_dir" "$tarball_path"
+}
 
 instalar_tailscale() {
     [[ "$SKIP_EXTRAS" == "true" ]] && return
@@ -625,10 +811,6 @@ instalar_tailscale() {
     fi
 }
 
-# ============================================================
-# ZED EDITOR
-# ============================================================
-
 instalar_zed() {
     [[ "$SKIP_EXTRAS" == "true" ]] && return
     log_passo "Instalando Zed Editor"
@@ -651,10 +833,6 @@ instalar_zed() {
         registrar_erro "Falha ao instalar Zed Editor."
     fi
 }
-
-# ============================================================
-# NVM (Node Version Manager)
-# ============================================================
 
 instalar_nvm() {
     [[ "$SKIP_EXTRAS" == "true" ]] && return
@@ -686,7 +864,7 @@ instalar_nvm() {
 # ============================================================
 
 limpeza_final() {
-    log_passo "Limpeza e atualização final do sistema"
+    log_passo "Limpeza e otimização final do sistema"
 
     if [[ "$DRY_RUN" == "true" ]]; then
         log_dry "apt autoclean + autoremove + flatpak update + snap refresh"
@@ -704,6 +882,13 @@ limpeza_final() {
     if comando_existe snap; then
         sudo snap refresh >> "$LOG_FILE" 2>&1 || true
         log_info "Snaps atualizados."
+    fi
+
+    if systemctl is-active --quiet tlp 2>/dev/null; then
+        log_info "Serviço TLP já ativo."
+    else
+        sudo systemctl enable --now tlp >> "$LOG_FILE" 2>&1 || true
+        log_info "Serviço TLP ativado."
     fi
 
     log_info "Limpeza concluída."
@@ -725,10 +910,10 @@ exibir_resumo() {
     _log "${VERDE}${NEGRITO}  INSTALAÇÃO CONCLUÍDA${RESET}"
     _log "${CIANO}${NEGRITO}  ─────────────────────────────────────────────${RESET}"
     echo ""
-    _log "  ${VERDE}✓  Instalados:        ${COUNT_INSTALLED}${RESET}"
-    _log "  ${AMARELO}⊘  Já instalados:     ${COUNT_SKIPPED}${RESET}"
-    _log "  ${VERMELHO}✗  Falhas:            ${COUNT_FAILED}${RESET}"
-    _log "  ${CIANO}⏱  Tempo de execução: ${min}m ${seg}s${RESET}"
+    _log "  ${VERDE}✓  Instalados/Configurados: ${COUNT_INSTALLED}${RESET}"
+    _log "  ${AMARELO}⊘  Já instalados/Ignorados:  ${COUNT_SKIPPED}${RESET}"
+    _log "  ${VERMELHO}✗  Falhas:                   ${COUNT_FAILED}${RESET}"
+    _log "  ${CIANO}⏱  Tempo de execução:        ${min}m ${seg}s${RESET}"
     echo ""
 
     if [[ "${#ERROS[@]}" -gt 0 ]]; then
@@ -741,10 +926,11 @@ exibir_resumo() {
     fi
 
     _log "  ${AMARELO}${NEGRITO}Próximos passos:${RESET}"
-    _log "  • Execute 'source ~/.bashrc' para ativar o NVM"
-    _log "  • Snaps podem exigir logout/login para funcionar corretamente"
-    _log "  • Flatpaks estarão disponíveis no menu de aplicativos"
-    _log "  • Reinicie o sistema para aplicar todas as mudanças"
+    _log "  • Execute 'source ~/.bashrc' para carregar as novas configurações"
+    _log "  • Seus dotfiles anteriores receberam backups com sufixo '.bak_<data>'"
+    _log "  • JetBrains Toolbox estará disponível no menu ou digitando 'jetbrains-toolbox'"
+    _log "  • Snaps e Flatpaks estarão disponíveis no menu de aplicativos"
+    _log "  • Reinicie o sistema para carregar todos os módulos e drivers"
     echo ""
     _log "  ${CIANO}Log completo salvo em: ${LOG_FILE}${RESET}"
     echo ""
@@ -755,12 +941,10 @@ exibir_resumo() {
 # ============================================================
 
 main() {
-    # Garantir que os diretórios necessários existam antes de qualquer log
     mkdir -p "$LOG_DIR" "$DIRECTORY_DOWNLOADS"
 
     parse_args "$@"
 
-    # Cabeçalho
     clear
     _log ""
     _log "${VERDE}${NEGRITO}  ╔═════════════════════════════════════════════════╗${RESET}"
@@ -780,15 +964,20 @@ main() {
     verificar_sudo
     confirmacao_inicio
 
+    configurar_locales
+    configurar_apparmor_electron
     atualizar_sistema
     instalar_snapd
-    instalar_debs
     instalar_apt
+    instalar_vscode_oficial
+    instalar_jetbrains_toolbox
+    instalar_debs
     instalar_flatpaks
     instalar_snaps
     instalar_tailscale
     instalar_zed
     instalar_nvm
+    sincronizar_dotfiles
     limpeza_final
     exibir_resumo
 }
