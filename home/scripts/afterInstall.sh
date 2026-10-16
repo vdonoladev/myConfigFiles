@@ -158,6 +158,8 @@ PROGRAMS_FLATPAK=(
     "com.getpostman.Postman|Postman"
     "best.ellie.StartupConfiguration|Startup Configuration"
     "io.github.flattool.Warehouse|Warehouse"
+    "org.gnome.Snapshot|Snapshot"
+    "com.heroicgameslauncher.hgl|Heroic Games Launcher"
 )
 
 # ============================================================
@@ -948,10 +950,10 @@ main() {
 
     clear
     _log ""
-    _log "${VERDE}${NEGRITO}  ╔═════════════════════════════════════════════════╗${RESET}"
-    _log "${VERDE}${NEGRITO}  ║    SCRIPT DE PÓS-INSTALAÇÃO LINUX v${SCRIPT_VERSION}          ║${RESET}"
-    _log "${VERDE}${NEGRITO}  ║    Autor: vdonoladev                             ║${RESET}"
-    _log "${VERDE}${NEGRITO}  ╚═════════════════════════════════════════════════╝${RESET}"
+    _log "${VERDE}${NEGRITO}  ╔═════════════════════════════════════════════════════════╗${RESET}"
+    _log "${VERDE}${NEGRITO}  ║    SCRIPT DE PÓS-INSTALAÇÃO LINUX v${SCRIPT_VERSION}    ║${RESET}"
+    _log "${VERDE}${NEGRITO}  ║    Autor: vdonoladev                                    ║${RESET}"
+    _log "${VERDE}${NEGRITO}  ╚═════════════════════════════════════════════════════════╝${RESET}"
     _log ""
     _log "  ${CIANO}Iniciado:  $(date '+%d/%m/%Y às %H:%M:%S')${RESET}"
     _log "  ${CIANO}Log:       ${LOG_FILE}${RESET}"
