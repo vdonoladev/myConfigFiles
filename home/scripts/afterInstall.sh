@@ -131,6 +131,7 @@ PROGRAMS_APT=(
     "fzf|FZF"
     "tlp|TLP Power Management"
     "tlp-rdw|TLP Radio Device Wizard"
+    "btop|Btop"
 )
 
 # ============================================================
