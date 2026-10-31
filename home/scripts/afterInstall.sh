@@ -161,6 +161,7 @@ PROGRAMS_FLATPAK=(
     "io.github.flattool.Warehouse|Warehouse"
     "org.gnome.Snapshot|Snapshot"
     "com.heroicgameslauncher.hgl|Heroic Games Launcher"
+    "net.lutris.Lutris|Lutris"
 )
 
 # ============================================================
